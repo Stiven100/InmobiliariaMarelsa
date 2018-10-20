@@ -1,0 +1,124 @@
+<section class="content-header">
+    <h1>
+        Administracion de clientes
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li class="active">Administracion de clientes</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <!--Columna derecha-->
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Datos personales</h3>
+                </div>
+                
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="Cedula">Cedula</label>
+                            <input type="text"  class="form-control"  id="cedulaCliente">
+                        </div>
+                        <div class="form-group">
+                            <label for="Nombre">Nombre</label>
+                            <input type="text"  class="form-control" id="nombreCliente">
+                        </div>
+                        <div class="form-group">
+                            <label for="Apellido">Apellido</label>
+                            <input type="text" class="form-control" id="apellidoCliente">
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="date" class="form-control pull-right" id="fechaNacimiento">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Genero</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option selected="selected">Masculino</option>
+                                <option>Femenino</option>
+                                <option>Prefiere no decirlo</option>
+                            </select>
+                        </div>
+                        
+                       
+                       
+                        
+
+
+                        <!-- /.box-body -->
+                        
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--Columna izquierda-->
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Datos personales</h3>
+                </div>
+                
+                <form role="form">
+                    <div class="box-body">
+                        
+                        
+                        <div class="form-group">
+                            <label>Direccion</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                <input type="email" class="form-control" placeholder="Email">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Usuario</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Ciudad</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option selected="selected">Seleccione una ciudad</option>
+                            </select>
+                        </div>
+                        
+                        <div class="box-footer">
+                            
+                            <button type="button" class="btn btn-primary">Registrar</button>
+                            
+                            <button type="button" class="btn btn-warning">Editar</button>
+                            
+                        </div>
+                        
+
+
+                        <!-- /.box-body -->
+                        
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

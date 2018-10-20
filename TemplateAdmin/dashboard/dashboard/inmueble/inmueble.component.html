@@ -1,0 +1,163 @@
+
+
+<section class="content-header">
+    <h1>
+        Crea o edita una propiedad
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li class="active">Administracion Inmueble</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <!--Columna derecha-->
+        <div class="col-md-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Datos principales</h3>
+                </div>
+
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="idInmueble">Id</label>
+                            <input type="text"  class="form-control"  id="idInmueble" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="precioInmueble">Precio</label>
+                            <input type="number"  class="form-control" id="precioInmueble">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Estrato</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option selected="selected">1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option selected="selected">Excelente</option>
+                                <option>Regular</option>
+                                <option>Abandono</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Antiguedad</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option selected="selected">Menos de un año</option>
+                                <option>1 a 8 años</option>
+                                <option>9 a 15 años</option>
+                                <option>16 a 30 años</option>
+                                <option>Mas de 30 años</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Direccion</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="Apellido">Apellido</label>
+                            <input type="text" class="form-control" id="apellidoEmpleado">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento</label>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="date" class="form-control pull-right" id="fechaNacimiento">
+                            </div>
+                            <!-- /.input group -->
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label>Ciudad</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option selected="selected">Seleccione una ciudad</option>
+                            </select>
+                        </div>
+
+
+
+
+
+                        <!-- /.box-body -->
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--Columna izquierda-->
+        <div class="col-lg-6">
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Facilidades</h3>
+                </div>
+                <form role="form">
+                    <div class="box-body">
+
+                        <div class="col-lg-4">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="parqueadero">
+                                <label class="custom-control-label" for="parqueadero">Parqueadero</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Area M 2</label>
+                                <input type="number" class="form-control" name="areaCuadrada" id="areaCuadrada">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label class="control-label">Num. de Habitaciones</label>
+                                <input type="number" class="form-control" name="numeroCuartos" id="numeroCuartos">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Num. de pisos</label>
+                                <input type="number" class="form-control" name="numeroPisos" id="numeroPisos">
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
