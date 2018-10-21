@@ -8,27 +8,10 @@
 -- Para crear un servicio
   ng generate service nombreServicio
 
--- Instrucciones Git
-
-  git config --global user.email "inf.carlosmartinez@gmail.com"
-  git config --global user.name "CarlosM4rtinez"
-
-  git add -A
-
-  git commit -m "first commit"
-
-  git push https://github.com/LuisBolivar77/Inmobiliaria
-
-  git pull origin master
-
--- clonar proyecto git
-  git clone https://github.com/LuisBolivar77/Inmobiliaria
-  -- luego
-  npm install
 
 -- INSTRUCCIONES PRUEBAS UNITARIAS -- 
 
-  -- lanza servidor karma, por deecto de angular
+  -- lanza servidor karma, por defecto de angular
   npm test
   -- Mantiene activo
   ng test
@@ -40,4 +23,4 @@
   ng test --code-coverage
 
   -- ruta para ver los reportes coverage de las pruebas
-  file:///C:/Users/krlox/Inmobiliaria/coverage/src/app/Paginas/publico/ver-inmueble/index.html
+  file:///C:/Users/stive/Inmobiliaria/coverage/src/app/Paginas/publico/ver-inmueble/index.html
