@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-10-2018 a las 03:19:27
+-- Tiempo de generación: 22-10-2018 a las 00:09:36
 -- Versión del servidor: 10.1.34-MariaDB
 -- Versión de PHP: 5.6.37
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `inmobiliariamarelsa`
+-- Base de datos: `marelsa`
 --
 
 -- --------------------------------------------------------
@@ -46,7 +46,12 @@ INSERT INTO `accesos` (`id`, `nombre`, `url`) VALUES
 (5, 'Gestion Inmuebles', 'administracion/gestion-inmuebles'),
 (6, 'Aprobar Inmuebles', 'administracion/aprobar-inmueble'),
 (7, 'Gestion Inmueble-Cliente', 'cliente/gestion-inmuebles'),
-(9, 'Gestion Ventas-Arriendos', 'administracion/gestion-ventas-arriendos');
+(9, 'Gestion Ventas-Arriendos', 'administracion/gestion-ventas-arriendos'),
+(10, 'Gestion Promociones', 'administrador/gestionar-promociones'),
+(11, 'Reservar Visita', 'cliente/visitas-cliente'),
+(12, 'Asignar Visitas', 'administracion/asignar-visitas'),
+(13, 'Visitas Asignadas', 'empleado/visitas-empleado'),
+(14, 'Finalizacion Arriendo', 'administracion/asignar-arriendo-contrato');
 
 -- --------------------------------------------------------
 
@@ -61,6 +66,22 @@ CREATE TABLE `archivo_inmueble` (
   `inmueble` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `archivo_inmueble`
+--
+
+INSERT INTO `archivo_inmueble` (`id`, `tipo`, `nombre`, `inmueble`) VALUES
+(1, 1, 'property_1.jpg', 1),
+(2, 2, 'property_2.jpg', 2),
+(3, 3, 'property_3.jpg', 3),
+(4, 4, 'property_4.jpg', 4),
+(5, 5, 'property_5.jpg', 5),
+(6, 6, 'property_6.jpg', 6),
+(7, 7, 'property_7.jpg', 7),
+(8, 1, 'property_8.jpg', 8),
+(9, 2, 'property_9.jpg', 9),
+(10, 3, 'property_9.jpg', 10);
+
 -- --------------------------------------------------------
 
 --
@@ -70,7 +91,9 @@ CREATE TABLE `archivo_inmueble` (
 CREATE TABLE `arriendo` (
   `id` int(11) NOT NULL,
   `contrato` int(11) NOT NULL,
-  `empleado` int(11) NOT NULL
+  `empleado` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `descripcion` varchar(400) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -171,9 +194,10 @@ CREATE TABLE `contrato` (
   `cliente` int(11) NOT NULL,
   `visita` int(11) NOT NULL,
   `estado` int(11) NOT NULL,
+  `valorFinalInmueble` int(11) NOT NULL,
   `fecha_finalizacion` date DEFAULT NULL,
   `fecha_solicitud` date NOT NULL,
-  `file_certificacion` longtext
+  `file_certificacion` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -215,6 +239,7 @@ CREATE TABLE `empleados` (
 --
 
 INSERT INTO `empleados` (`usuario`, `salario`, `cargo`) VALUES
+(0, 200002, 1),
 (2, 1200000, 2);
 
 -- --------------------------------------------------------
@@ -235,6 +260,13 @@ CREATE TABLE `experiencias` (
   `empleado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `experiencias`
+--
+
+INSERT INTO `experiencias` (`id`, `empresa`, `empresa_direccion`, `empresa_telefono`, `cargo`, `fecha_inicio`, `fecha_fin`, `file_certificacion`, `empleado`) VALUES
+(1, 'ddd', 'ddd', '333', '3', '2018-11-11', '2018-12-12', 'dffddf', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -248,6 +280,13 @@ CREATE TABLE `formaciones` (
   `file_certificacion` varchar(300) NOT NULL,
   `empleado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `formaciones`
+--
+
+INSERT INTO `formaciones` (`id`, `institucion`, `titulo`, `file_certificacion`, `empleado`) VALUES
+(1, 'fsdf', 'sdfsd', 'fsdf', 0);
 
 -- --------------------------------------------------------
 
@@ -292,7 +331,7 @@ CREATE TABLE `inmueble` (
   `garajes` int(11) NOT NULL,
   `habitaciones` int(11) NOT NULL,
   `detalles` varchar(400) NOT NULL,
-  `aÒoconstruccion` varchar(20) NOT NULL,
+  `añoconstruccion` varchar(20) NOT NULL,
   `ascensor` char(1) NOT NULL,
   `canchas_deportivas` char(1) NOT NULL,
   `zonas_humedas` char(1) NOT NULL,
@@ -312,8 +351,6 @@ CREATE TABLE `inmueble` (
   `vista_exterior_interior` char(1) NOT NULL,
   `zona` int(11) NOT NULL,
   `numero_matricula` varchar(100) NOT NULL,
-  `latitud` double NOT NULL,
-  `longitud` double NOT NULL,
   `aprobacion_fecha` date DEFAULT NULL,
   `tipo` int(11) NOT NULL,
   `ciudad` int(11) NOT NULL,
@@ -326,8 +363,17 @@ CREATE TABLE `inmueble` (
 -- Volcado de datos para la tabla `inmueble`
 --
 
-INSERT INTO `inmueble` (`id`, `direccion`, `area`, `valor`, `banios`, `estado`, `tipoav`, `garajes`, `habitaciones`, `detalles`, `aÒoconstruccion`, `ascensor`, `canchas_deportivas`, `zonas_humedas`, `zona_infantil`, `jardines`, `transporte_publico_cercano`, `precio_negociable`, `zona_ropas`, `parqueadero`, `deposito`, `estudio`, `tipo_cortinas`, `cuarto_servicio`, `chimenea`, `cocinaac`, `comedorIndependiente`, `vista_exterior_interior`, `zona`, `numero_matricula`, `latitud`, `longitud`, `aprobacion_fecha`, `tipo`, `ciudad`, `usuario`, `administrador`, `promocion`) VALUES
-(1, '1', 1, 1, 1, 1, 1, 1, 1, '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', 1, '1', 1, 1, '0000-00-00', 1, 1, 1, 1, NULL);
+INSERT INTO `inmueble` (`id`, `direccion`, `area`, `valor`, `banios`, `estado`, `tipoav`, `garajes`, `habitaciones`, `detalles`, `añoconstruccion`, `ascensor`, `canchas_deportivas`, `zonas_humedas`, `zona_infantil`, `jardines`, `transporte_publico_cercano`, `precio_negociable`, `zona_ropas`, `parqueadero`, `deposito`, `estudio`, `tipo_cortinas`, `cuarto_servicio`, `chimenea`, `cocinaac`, `comedorIndependiente`, `vista_exterior_interior`, `zona`, `numero_matricula`, `aprobacion_fecha`, `tipo`, `ciudad`, `usuario`, `administrador`, `promocion`) VALUES
+(1, 'carrera 1', 12, 400000, 4, 1, 1, 2, 12, 'bella casa', '1983-09-28', '1', '0', '1', '0', '1', '0', '1', '0', '0', '1', '0', 'melas', '0', '1', '0', '1', '1', 1, '123321', '2018-09-28', 1, 3, 2, NULL, NULL),
+(2, 'carrera 20', 234, 500000, 2, 1, 1, 2, 2, 'casa grande', '1983-09-28', '0', '1', '0', '1', '0', '1', '0', '1', '1', '0', '1', 'de tela', '1', '0', '1', '0', '0', 0, '321123', '2018-09-28', 5, 3, 1, NULL, NULL),
+(3, 'carrera 30', 23, 600000, 1, 1, 1, 2, 3, 'casa pequeña', '1983-09-28', '1', '0', '1', '0', '1', '0', '1', '0', '0', '1', '0', 'percianas', '0', '1', '0', '1', '1', 0, '321231', '2018-09-28', 2, 4, 2, NULL, NULL),
+(4, 'carrerra 40', 543, 2000000, 3, 1, 1, 0, 4, 'casa verde', '1983-09-28', '1', '1', '0', '1', '0', '1', '0', '1', '1', '0', '1', 'percianas', '1', '0', '1', '0', '0', 0, '3213421', '2018-09-28', 2, 5, 1, NULL, NULL),
+(5, 'carrera 50', 123, 4000000, 4, 1, 1, 2, 5, 'casa roja', '1983-09-28', '1', '0', '1', '0', '1', '0', '1', '0', '0', '1', '0', 'percianas', '0', '1', '0', '1', '1', 1, '432123', '2018-09-28', 4, 6, 2, NULL, NULL),
+(6, 'carrerra 100', 5645, 3000000, 5, 1, 1, 1, 6, 'casa moraada', '1983-09-28', '0', '1', '0', '1', '1', '1', '1', '0', '0', '0', '1', 'percianas', '1', '0', '1', '0', '1', 0, '2312451', '2018-09-28', 3, 7, 1, NULL, NULL),
+(7, 'carrera 24', 234, 2000000, 2, 0, 1, 0, 7, 'casa azul', '1983-09-28', '0', '0', '0', '0', '1', '0', '1', '0', '1', '1', '1', 'percianas', '1', '0', '1', '1', '0', 1, '345211', '2018-09-28', 5, 8, 2, NULL, NULL),
+(8, 'carrera 34', 423, 8000000, 3, 0, 0, 3, 8, 'casa gris', '1983-09-28', '0', '0', '1', '1', '1', '0', '1', '1', '1', '1', '1', 'percianas', '1', '1', '1', '1', '0', 0, '63123', '2018-09-28', 4, 2, 2, NULL, NULL),
+(9, 'carrera 43', 564, 7000000, 1, 1, 1, 0, 2, 'casa sin techo', '1983-09-28', '1', '0', '0', '0', '1', '0', '0', '0', '1', '1', '1', 'percianas', '1', '0', '0', '0', '0', 1, '723131', '2018-09-28', 2, 7, 1, NULL, NULL),
+(10, 'carrera 27', 123, 9000000, 5, 0, 0, 0, 2, 'casa amarilla', '1983-09-28', '0', '1', '1', '1', '0', '1', '0', '1', '1', '0', '1', 'percianas', '1', '0', '1', '0', '1', 1, '8123425', '2018-09-28', 1, 5, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -341,8 +387,6 @@ CREATE TABLE `personas` (
   `nombre` varchar(40) NOT NULL,
   `apellido` varchar(40) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `latitud` double NOT NULL,
-  `longitud` double NOT NULL,
   `telefono` varchar(10) NOT NULL,
   `direccion` varchar(50) NOT NULL,
   `rol` int(11) NOT NULL
@@ -352,13 +396,14 @@ CREATE TABLE `personas` (
 -- Volcado de datos para la tabla `personas`
 --
 
-INSERT INTO `personas` (`id`, `cedula`, `nombre`, `apellido`, `fecha_nacimiento`, `latitud`, `longitud`, `telefono`, `direccion`, `rol`) VALUES
-(0, '1095', 'ZCX', 'FSD', '1993-12-12', 0, 0, '12312', 'sfsd', 2),
-(1, '1094', 'Sebastian', 'Salazar', '1989-02-02', 0, 0, '3138920011', 'carrera 14 #4567', 1),
-(2, '1090', 'david', 'ramirez', '1992-12-12', 0, 0, '3178860805', 'cra 15 10 n21', 3),
-(3, '1091', 'pedro', 'perez', '1989-02-03', 0, 0, '3214567', 'calle 2 Norte', 2),
-(4, '1092', 'camilo', 'zapata', '1989-04-03', 0, 0, '3314567', 'calle 2 Norte', 2),
-(5, '1093', 'laura', 'posada', '1989-07-03', 0, 0, '3214133345', 'calle 2 Norte', 2);
+INSERT INTO `personas` (`id`, `cedula`, `nombre`, `apellido`, `fecha_nacimiento`, `telefono`, `direccion`, `rol`) VALUES
+(0, '1234', 'gdfgd', 'fgdf', '1995-04-03', '3213', 'fsdf', 3),
+(1, '1094', 'Carlos', 'Martinez', '1989-02-02', '3138920011', 'carrera 14 #4567', 1),
+(2, '1090', 'Camila', 'Torres', '1989-02-02', '3214567890', 'calle 2 Norte', 3),
+(3, '1091', 'pedro', 'perez', '1989-02-03', '3214567', 'calle 2 Norte', 2),
+(4, '1092', 'camilo', 'zapata', '1989-04-03', '3314567', 'calle 2 Norte', 2),
+(5, '1093', 'laura', 'posada', '1989-07-03', '3214133345', 'calle 2 Norte', 2),
+(6, '1089', 'daniela', 'rojas', '1989-09-03', '32145637', 'calle 2 Norte', 2);
 
 -- --------------------------------------------------------
 
@@ -370,7 +415,8 @@ CREATE TABLE `promocion` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `porcentaje` int(11) NOT NULL,
-  `fecha` date NOT NULL
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -396,10 +442,12 @@ CREATE TABLE `reservar_visita` (
   `id` int(11) NOT NULL,
   `mensaje` varchar(600) NOT NULL,
   `fecha` date DEFAULT NULL,
-  `estado` int(11) NOT NULL,
+  `estado` varchar(10) NOT NULL,
   `inmueble` int(11) NOT NULL,
   `cliente` int(11) NOT NULL,
-  `empleado` int(11) NOT NULL
+  `empleado` int(11) NOT NULL,
+  `comentario` varchar(1000) DEFAULT NULL,
+  `hora_visita` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -456,10 +504,18 @@ INSERT INTO `rol_accesos` (`rol`, `acceso`) VALUES
 (1, 2),
 (1, 3),
 (1, 4),
+(1, 5),
 (1, 6),
+(1, 7),
 (1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 14),
 (2, 7),
-(3, 3);
+(2, 11),
+(3, 3),
+(3, 13);
 
 -- --------------------------------------------------------
 
