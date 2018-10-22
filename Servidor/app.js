@@ -22,6 +22,7 @@ var inmublesServicio = require('./servicios/InmublesServicio')
 // servicios genericos
 var genericoServicio = require('./servicios/genericoServicio')
 
+
 // -------------END --------------- //
 
 var app = express();
@@ -99,6 +100,7 @@ app.get('/personas/listar', usuarioServicio.listarPersonas);
 app.get('/personas/listar-by-rol/:rol', usuarioServicio.listarPersonasByRol);
 app.post('/personas/registrar', usuarioServicio.registrarPersona);
 app.post('/personas/editar', usuarioServicio.editarPersona);
+//app.get('/personas/persona-by-id/:id', .personaById);
 // ------- Rutas para los Servicios de Rol y Accesos -------- //
 app.get('/rol/listar', rolServicio.listar);
 app.get('/rol-accesos/listar', rolServicio.ListarRolAccesos);

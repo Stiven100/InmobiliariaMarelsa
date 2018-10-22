@@ -5,6 +5,8 @@ import { Usuario } from 'src/app/Modelo/Usuario';
 import { GenericoService } from 'src/app/Servicios/genericoServ.service';
 import { UsuarioService } from 'src/app/Servicios/usuarioServ.service';
 import { Empleado } from 'src/app/Modelo/Empleado';
+import { Persona } from 'src/app/Modelo/Persona';
+import { PersonaService } from 'src/app/Servicios/personaServ.service';
 
 @Component({
   selector: 'app-gestion-solicitudes',
@@ -16,21 +18,24 @@ export class GestionSolicitudesComponent implements OnInit {
   empleados:Array<Empleado>=[];
   solicitudes:Array<Solicitud>=[];
   inmueble:Inmueble=new Inmueble();
-  empleado:Empleado = new Empleado();
+  persona:Persona = new Persona();
   usuario:Usuario=new Usuario();
-
+  solicitud:Solicitud= new Solicitud();
   comentario:String;
 
 
 
   constructor(private genericoServicio: GenericoService,
-    private usuarioServicio: UsuarioService) { }
+    private personaService: PersonaService) { 
+
+    }
 
   ngOnInit() {
-this.empleado.usuario=this.usuario;
-    this.inmueble=this.inmueble;
-
+    this.solicitud.persona=this.persona;
+    this.solicitud.inmueble=this.inmueble;
+    this.listar();
   }
+
 
   listar() {
     // Obtenemos la lista de solicitudes
@@ -39,26 +44,24 @@ this.empleado.usuario=this.usuario;
       this.solicitudes = rta.data;
       // obtenemos el resto de informacion de la solicitud
       // tslint:disable-next-line:prefer-const
-      for (let e of this.solicitudes) {
-        // obtenemos el comentario
-        this.genericoServicio.buscar('cargos', {'comentario': e.comentario}).subscribe(rta2 => {
-          e.comentario = rta2.data;
-          // Obtenemos el usuario
-          this.genericoServicio.buscar('usuarios', {'usuario': e.usuario}).subscribe(rta3 => {
-            e.usuario = rta3.data;
+      for (let p of this.solicitudes) {
+   
+         
             // Obtenemos el inmueble
-            this.genericoServicio.buscar('inmueble', {'inmueble': e.inmueble}).subscribe(rta4 => {
-              e.inmueble= rta4.data;
+            this.genericoServicio.buscar('inmueble', {'id': p.inmueble}).subscribe(rta2 => {
+              p.inmueble= rta2.data;
+
+               // Obtenemos el usuario
+         
+            this.genericoServicio.buscar('personas',{'id':p.persona}).subscribe(rta1 => {
+              p.persona = rta1.data;
+              
             });
+          
           });
-        });
       }
     }
     });
   }
-
-
-
-  
-
 }
+

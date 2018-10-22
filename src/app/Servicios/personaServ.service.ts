@@ -108,4 +108,17 @@ export class PersonaService {
         );
     }
 
+    personaById (persona: Persona) {
+        console.log('////////////////// 1');
+        return this.http.get<any>(this.domain + 'personas/persona-by-id/' + persona.id)
+        .pipe(
+            map(res => {
+                console.log('////////////////// 2' + res.length);
+                return res;
+            })
+        );
+    }
+
+
+
 }

@@ -13,11 +13,20 @@
               <thead>
                 <tr>
                   <th scope="col">comentarios</th>
+                  <th scope="col"> inmueble</th>
                   <th scope="col">usuario</th>
-                  <th scope="col">direccion inmueble</th>
                 
                 </tr>
               </thead>
+              <tbody>
+                <tr *ngFor="let p of solicitudes">
+
+                  <td>{{p.comentario}}</td>
+                  <td>{{p.inmueble.direccion}}</td>
+                  <td>{{p.persona.nombre}}</td>
+
+                </tr>
+              </tbody>
             </table>
       </div>
       </section>
