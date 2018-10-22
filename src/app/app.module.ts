@@ -25,16 +25,11 @@ import { InmuebleClienteComponent } from './Paginas/seguro/inmueble-cliente/inmu
 import { AgmCoreModule } from '@agm/core';
 import { GestionVentasArriendosComponent } from './Paginas/seguro/gestion-ventas-arriendos/gestion-ventas-arriendos.component';
 import { GestionarPromocionesComponent } from './Paginas/seguro/gestionar-promociones/gestionar-promociones.component';
-<<<<<<< HEAD
-import { NavbarComponent } from './Layout/navbar/navbar.component';
-import { GestionSolicitudesComponent } from './Paginas/seguro/gestion-solicitudes/gestion-solicitudes.component';
-=======
 import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas-contratos/asignar-ventas-contratos.component';
 import { VisitasClienteComponent } from './Paginas/seguro/visitas-cliente/visitas-cliente.component';
 import { AsignarArriendoContratoComponent } from './Paginas/seguro/asignar-arriendo-contrato/asignar-arriendo-contrato.component';
 import { AsignarVisitasComponent } from './Paginas/seguro/asignar-visitas/asignar-visitas.component';
 import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visitas-empleado.component';
->>>>>>> d969890d8dc2e184e845c3ab3ce3deba3c186970
 
 @NgModule({
   declarations: [
@@ -56,16 +51,11 @@ import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visi
     InmuebleClienteComponent,
     GestionVentasArriendosComponent,
     GestionarPromocionesComponent,
-<<<<<<< HEAD
-    NavbarComponent,
-    GestionSolicitudesComponent
-=======
     VisitasClienteComponent,
     AsignarVentasContratosComponent,
     AsignarVisitasComponent,
     VisitasEmpleadoComponent,
     AsignarArriendoContratoComponent
->>>>>>> d969890d8dc2e184e845c3ab3ce3deba3c186970
   ],
   imports: [
     BrowserModule,
@@ -105,10 +95,6 @@ import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visi
       {
         path: 'administracion/aprobar-inmueble',
         component: AprobacionInmueblesComponent
-      },
-      {
-        path:'administracion/gestion-solicitudes',
-        component: GestionSolicitudesComponent
       },
       {
         path: 'ver-inmueble',
