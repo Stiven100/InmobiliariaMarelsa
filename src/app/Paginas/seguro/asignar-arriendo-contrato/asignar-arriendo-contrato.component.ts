@@ -1,53 +1,53 @@
-import { GenericoService } from 'src/app/Servicios/genericoServ.service';
-import { UsuarioService } from 'src/app/Servicios/usuarioServ.service';
 import { Component, OnInit } from '@angular/core';
-import { Usuario } from 'src/app/Modelo/Usuario';
-import { Contrato } from 'src/app/Modelo/Contrato';
-import { Empleado } from 'src/app/Modelo/Empleado';
-import { Persona } from 'src/app/Modelo/Persona';
-import { NgForm } from '@angular/forms';
-import { AuxiliarObjeto } from 'src/app/Modelo/AuxiliarObjeto';
+import { Contrato } from '../../../Modelo/Contrato';
+import { Arriendo } from '../../../Modelo/Arriendo';
+import { Usuario } from '../../../Modelo/Usuario';
+import { GenericoService } from '../../../Servicios/genericoServ.service';
+import { UsuarioService } from '../../../Servicios/usuarioServ.service';
+import { NgForm } from '../../../../../node_modules/@angular/forms';
+import { AuxiliarObjeto } from '../../../Modelo/AuxiliarObjeto';
 
-@Component ({
-  selector: 'app-gestion-ventas-arriendos',
-  templateUrl: './gestion-ventas-arriendos.component.html',
-  styleUrls: ['./gestion-ventas-arriendos.component.css']
+
+@Component({
+  selector: 'app-asignar-arriendo-contrato',
+  templateUrl: './asignar-arriendo-contrato.component.html',
+  styleUrls: ['./asignar-arriendo-contrato.component.css']
 })
-export class GestionVentasArriendosComponent implements OnInit {
+export class AsignarArriendoContratoComponent implements OnInit {
 
-  // listado de contratos para finalizar
   contratos: Array<Contrato> = [];
-  usuario: Usuario = new Usuario();
-  persona: Persona = new Persona();
-  empleados: Empleado = new Empleado();
+  constratosFinales: Array<Contrato> = [];
+  arriendos: Array<Arriendo> = [];
+  arriendo: Arriendo= new Arriendo();
   contrato: Contrato = new Contrato();
 
   // usuario en sesion
   usuarioSesion: Usuario = new Usuario();
 
-  // Variables para los mensajes en la pagina
-  show: number;
-  msj: string;
-  idContrato: number;
-  busco: boolean;
-  verSelec = false;
+   // Variables para los mensajes en la pagina
+   show: number;
+   msj: string;
+   idContrato: number;
+   busco: boolean;
+   verSelec = false;
 
   constructor(private generico: GenericoService, private usuarioServicio: UsuarioService) { }
 
   ngOnInit() {
     // Validamos si el usuario tiene acceso a la pagina
-    this.usuarioServicio.esAccesible('administracion/gestion-ventas-arriendos');
+    this.usuarioServicio.esAccesible('administracion/asignar-arriendo-contrato');
     this.usuarioSesion = this.usuarioServicio.getUsuario();
     this.listar();
   }
 
   /**
-   * lista los contratos de estado "0" para llegar a su finalizacion
+   * lista los contratos de estado "1" para llegar a su finalizacion
    */
   listar() {
-    this.generico.listar('contrato', {'estado': 0}).subscribe(res => {
+    this.generico.listar('contrato', {'estado': 1}).subscribe(res => {
       this.contratos = res.data;
       this.agregarObjetos();
+      
     });
   }
 
@@ -67,11 +67,27 @@ export class GestionVentasArriendosComponent implements OnInit {
               c.empleado.usuario = res2.data;
               this.generico.buscar('personas', {'id': c.empleado.usuario.persona}).subscribe(res4 => {
                 c.empleado.usuario.persona = res4.data;
+                this.generico.buscar('reservar_visita', {'id': c.visita}).subscribe(res6 => {
+                  c.visita = res6.data;
+                  this.generico.buscar('inmueble', {'id': c.visita.inmueble}).subscribe(res7 => {
+                    c.visita.inmueble = res7.data;
+                    this.listadoFinal();
+                  });
+                });
               });
             });
           });
         });
       });
+    }
+  }
+
+
+  listadoFinal() {
+    for (const c of this.contratos) {
+      if (c.visita.inmueble.tipoAV === 0) {
+        this.constratosFinales.push(c);
+      }
     }
   }
 
@@ -96,17 +112,22 @@ export class GestionVentasArriendosComponent implements OnInit {
   ver(i: Contrato) {
     this.verSelec = true;
     this.contrato = i;
-    for (const c of this.contratos) {
-      console.log(c);
-    }
+    console.log(this.contrato.id);
   }
-
 
   registrar(form: NgForm) {
 
-    this.generico.registrar('contrato', this.contrato).subscribe(res => {
+    const fecha = this.fechaActual();
+    this.arriendo.fecha = fecha;
+    this.arriendo.empleado = this.usuarioServicio.getUsuario();
+    this.arriendo.contrato = this.contrato;
+    const aux: AuxiliarObjeto = new AuxiliarObjeto();
+    aux.objeto = this.arriendo;
+    aux.replaceValue('contrato', this.contrato.id);
+
+    this.generico.registrar('arriendo', aux.objeto).subscribe(res => {
       if (res.data === 'exito') {
-        this.msj = 'El contrato se ha registrado correctamente';
+        this.msj = 'El arriendo se ha registrado correctamente';
         this.show = 2;
         form.reset();
       } else {
@@ -116,27 +137,16 @@ export class GestionVentasArriendosComponent implements OnInit {
     });
   }
 
-
   /**
-   * permite editar un inmueble
-   * @param form el formulario con datos del inmueble
+   * edita el estado del contrato con valor '2' para saber que esta finalizado
    */
-  editar(form: NgForm) {
-
-    const fecha = this.fechaActual();
-    this.contrato.fecha_finalizacion = fecha;
-    this.contrato.estado = 1;
+  editarEstado(form: NgForm){
     
-    // tslint:disable-next-line:prefer-const
-    var aux: AuxiliarObjeto = new AuxiliarObjeto();
-    aux.objeto = this.contrato;
-    aux.replaceValue('cliente', this.contrato.cliente.persona.id);
-    aux.replaceValue('empleado', this.contrato.empleado.usuario.persona.id);
-    console.log(aux.objeto);
+    this.contrato.estado=2;
 
-    this.generico.editar('contrato', aux.objeto, 'id').subscribe(res => {
+    this.generico.editar('contrato',this.contrato,'id').subscribe(res => {
       if (res.data === 'exito') {
-        this.msj = 'el contrato se edito correctamente';
+        this.msj = 'el contrato de arriendo se edito correctamente';
         this.show = 2;
         this.verSelec = false;
         form.reset();
@@ -146,6 +156,7 @@ export class GestionVentasArriendosComponent implements OnInit {
         this.msj = res.data;
       }
     });
+
   }
 
   fechaActual(): string {
@@ -157,4 +168,5 @@ export class GestionVentasArriendosComponent implements OnInit {
     return dateFormat(now, 'yyyy/mm/dd');
 
   }
+
 }

@@ -21,6 +21,9 @@
 				<li>
 					<a href="index.html">Bienvenido {{usuario.persona.nombre}} {{usuario.persona.apellido}}</a>
 				</li>
+				<li><a href='/?objeto=%7B"tipoAV":"1"%7D'>Venta</a></li>
+				<li><a href='/?objeto=%7B"tipoAV":"0"%7D'>Arriendo</a></li>
+				
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<span class="glyphicon glyphicon-tower"></span>&nbsp;
@@ -47,7 +50,7 @@
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span>&nbsp;
-						<span class="hidden-sm" >{{usuario.persona.rol.nombre}}</span>
+						<span class="hidden-sm">{{usuario.persona.rol.nombre}}</span>
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu">
@@ -86,9 +89,11 @@
 			</div>
 			<div class="modal-body">
 				<div class="aviso alert alert-danger" style="margin: 15px 0 0 0;" *ngIf="show == 1">
-					<div id="close" title="Cerrar">x</div>{{msj}}</div>
+					<div id="close" title="Cerrar">x</div>{{msj}}
+				</div>
 				<div class="aviso alert alert-success" style="margin: 15px 0 0 0;" *ngIf="show == 2">
-					<div id="close" title="Cerrar">x</div>{{msj}}</div>
+					<div id="close" title="Cerrar">x</div>{{msj}}
+				</div>
 				<form role="form">
 					<div class="form-group">
 						<label for="emailAddress">Nombre de Usuario</label>
@@ -98,11 +103,11 @@
 						<label for="password">Contraseña</label>
 						<input [(ngModel)]="usuario.password" name="password" type="password" class="form-control input-lg" placeholder="Password">
 					</div>
-					
+
 				</form>
 			</div>
 			<div class="modal-footer">
-				
+
 				<input (click)="login($event)" type="submit" class="btn btn-success btn-block btn-lg" value="Sign in">
 			</div>
 		</div>
