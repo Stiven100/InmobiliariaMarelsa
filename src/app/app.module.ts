@@ -6,7 +6,7 @@ import { RegistroUsuarioComponent } from './Paginas/publico/registro-usuario/reg
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatFormField } from '@angular/material';
 import { LoginComponent } from './Paginas/publico/login/login.component';
 import { IndexComponent } from './Paginas/publico/index/index.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -25,7 +25,11 @@ import { InmuebleClienteComponent } from './Paginas/seguro/inmueble-cliente/inmu
 import { AgmCoreModule } from '@agm/core';
 import { GestionVentasArriendosComponent } from './Paginas/seguro/gestion-ventas-arriendos/gestion-ventas-arriendos.component';
 import { GestionarPromocionesComponent } from './Paginas/seguro/gestionar-promociones/gestionar-promociones.component';
-import { NavbarComponent } from './Layout/navbar/navbar.component';
+import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas-contratos/asignar-ventas-contratos.component';
+import { VisitasClienteComponent } from './Paginas/seguro/visitas-cliente/visitas-cliente.component';
+import { AsignarArriendoContratoComponent } from './Paginas/seguro/asignar-arriendo-contrato/asignar-arriendo-contrato.component';
+import { AsignarVisitasComponent } from './Paginas/seguro/asignar-visitas/asignar-visitas.component';
+import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visitas-empleado.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +51,11 @@ import { NavbarComponent } from './Layout/navbar/navbar.component';
     InmuebleClienteComponent,
     GestionVentasArriendosComponent,
     GestionarPromocionesComponent,
-    NavbarComponent
+    VisitasClienteComponent,
+    AsignarVentasContratosComponent,
+    AsignarVisitasComponent,
+    VisitasEmpleadoComponent,
+    AsignarArriendoContratoComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +72,18 @@ import { NavbarComponent } from './Layout/navbar/navbar.component';
       apiKey: 'AIzaSyB0WP4oGVaDXx-3HZDqzwNsbUi6yS6lEk8'
     }),
     RouterModule.forRoot([
+      {
+        path: 'empleado/visitas-empleado',
+        component: VisitasEmpleadoComponent
+      },
+      {
+        path: 'administracion/asignar-visitas',
+        component: AsignarVisitasComponent
+      },
+      {
+        path: 'cliente/visitas-cliente',
+        component: VisitasClienteComponent
+      },
       {
         path: 'administrador/gestionar-promociones',
         component: GestionarPromocionesComponent
@@ -115,6 +135,14 @@ import { NavbarComponent } from './Layout/navbar/navbar.component';
       {
         path: 'administracion/gestion-ventas-arriendos',
         component: GestionVentasArriendosComponent
+      },
+      {
+        path: 'administracion/asignar-ventas-contratos',
+        component: AsignarVentasContratosComponent
+      },
+      {
+        path: 'administracion/asignar-arriendo-contrato',
+        component: AsignarArriendoContratoComponent
       },
       {
         path: 'login', // http://localhost:4200/login
