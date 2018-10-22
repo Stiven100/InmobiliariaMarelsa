@@ -30,6 +30,7 @@ import { VisitasClienteComponent } from './Paginas/seguro/visitas-cliente/visita
 import { AsignarArriendoContratoComponent } from './Paginas/seguro/asignar-arriendo-contrato/asignar-arriendo-contrato.component';
 import { AsignarVisitasComponent } from './Paginas/seguro/asignar-visitas/asignar-visitas.component';
 import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visitas-empleado.component';
+import { GestionSolicitudesComponent } from './Paginas/seguro/gestion-solicitudes/gestion-solicitudes.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visi
     AsignarVentasContratosComponent,
     AsignarVisitasComponent,
     VisitasEmpleadoComponent,
-    AsignarArriendoContratoComponent
+    AsignarArriendoContratoComponent,
+    GestionSolicitudesComponent
   ],
   imports: [
     BrowserModule,
@@ -143,6 +145,10 @@ import { VisitasEmpleadoComponent } from './Paginas/seguro/visitas-empleado/visi
       {
         path: 'administracion/asignar-arriendo-contrato',
         component: AsignarArriendoContratoComponent
+      },
+      {
+        path:'administracion/gestion-solicitudes',
+        component: GestionSolicitudesComponent
       },
       {
         path: 'login', // http://localhost:4200/login
