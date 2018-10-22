@@ -1,7 +1,7 @@
 -- Para acceder a una carpeta
   cd src/app/Paginas
 
--- Para crear un nuevo componente
+-- Para crear un nuecvo componente
   ng generate component login
   ng g c login
 

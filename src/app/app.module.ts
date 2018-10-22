@@ -26,6 +26,7 @@ import { AgmCoreModule } from '@agm/core';
 import { GestionVentasArriendosComponent } from './Paginas/seguro/gestion-ventas-arriendos/gestion-ventas-arriendos.component';
 import { GestionarPromocionesComponent } from './Paginas/seguro/gestionar-promociones/gestionar-promociones.component';
 import { NavbarComponent } from './Layout/navbar/navbar.component';
+import { GestionSolicitudesComponent } from './Paginas/seguro/gestion-solicitudes/gestion-solicitudes.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { NavbarComponent } from './Layout/navbar/navbar.component';
     InmuebleClienteComponent,
     GestionVentasArriendosComponent,
     GestionarPromocionesComponent,
-    NavbarComponent
+    NavbarComponent,
+    GestionSolicitudesComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +77,10 @@ import { NavbarComponent } from './Layout/navbar/navbar.component';
       {
         path: 'administracion/aprobar-inmueble',
         component: AprobacionInmueblesComponent
+      },
+      {
+        path:'administracion/gestion-solicitudes',
+        component: GestionSolicitudesComponent
       },
       {
         path: 'ver-inmueble',
