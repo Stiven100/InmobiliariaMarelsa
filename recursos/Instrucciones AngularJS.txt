@@ -1,5 +1,5 @@
 -- Para acceder a una carpeta
-  cd src/app/Paginas
+  cd m
 
 -- Para crear un nuecvo componente
   ng generate component login

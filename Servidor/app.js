@@ -82,7 +82,7 @@ app.use(
         user: 'root',
         password : '1234',
         port : 3306, //port mysql
-        database:'marelsa'
+        database:'marelsa2'
 
     },'pool') //or single
 );

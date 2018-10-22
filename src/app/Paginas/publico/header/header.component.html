@@ -21,8 +21,7 @@
 				<li>
 					<a href="index.html">Bienvenido {{usuario.persona.nombre}} {{usuario.persona.apellido}}</a>
 				</li>
-				<li><a href='/?objeto=%7B"tipoAV":"1"%7D'>Venta</a></li>
-				<li><a href='/?objeto=%7B"tipoAV":"0"%7D'>Arriendo</a></li>
+			
 				
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -63,7 +62,7 @@
 					<a href="#modal-signin" class="signin" data-toggle="modal" data-target="#modal-signin">Sign in</a>
 				</li>
 				<li *ngIf="!usuario.persona">
-					<a href="#" class="signup" data-toggle="modal" data-target="#modal-signup">Sign up</a>
+					<a href="modal-signin" class="signup" data-toggle="modal" data-target="#modal-signup">Sign up</a>
 				</li>
 				<li *ngIf="usuario.persona">
 					<a (click)="logout($event)" href="" class="signup">Cerrar Sesion</a>

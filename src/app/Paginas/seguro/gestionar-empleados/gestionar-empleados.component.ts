@@ -127,7 +127,7 @@ export class GestionarEmpleadosComponent implements OnInit {
         }
       });
     } else {
-      this.msj = 'Ingrese toda los datos';
+      this.msj = 'Ingrese todos los datos';
       this.show = 1;
       window.alert(this.msj);
     }
