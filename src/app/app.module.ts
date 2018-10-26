@@ -57,6 +57,10 @@ import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmuebl
         component: InmueblesAdminComponent
       },
       {
+        path: 'administracion/inmuebles-admin',
+        component: InmueblesAdminComponent
+      },
+      {
         path: 'editar-cuenta',
         component: EditarCuentaComponent
       },
