@@ -20,9 +20,29 @@ export class GenericoService {
      * @param objeto los parametros dado el caso que vaya a iltrar
      */
     listar (table: string, object: object) {
-        const data = {'tabla' : table, 'objeto' : object};
-       // console.log(data);
+        var data = {'tabla' : table, 'objeto' : object};
         return this.http.post<any>(this.domain + 'generico/listar', data)
+        .pipe(
+            map(res => {
+                return res;
+            })
+        );
+    }
+
+    /**
+     * Obtenemos la lista de roles
+     */
+    listarDirect () {
+        return this.http.get<any>(this.domain + 'promocion/listar')
+        .pipe(
+            map(res => {
+                return res;
+            })
+        );
+    }
+
+    listarInmuebesPromociones () {
+        return this.http.get<any>(this.domain + 'promocion/listarInmuPromo')
         .pipe(
             map(res => {
                 return res;
@@ -36,7 +56,8 @@ export class GenericoService {
      * @param objeto el objeto a registrar
      */
     registrar (table: string, object: object) {
-        const data = {'tabla' : table, 'objeto' : object};
+        var data = {'tabla' : table, 'objeto' : object};
+        console.log(data);
         return this.http.post<any>(this.domain + 'generico/guardar', data)
         .pipe(
             map(res => {
@@ -51,7 +72,23 @@ export class GenericoService {
      * @param objeto el objeto a editar
      */
     editar (table: string, object: object, pk: string) {
-        const data = {'tabla' : table, 'objeto' : object, 'pk' : pk};
+        var data = {'tabla' : table, 'objeto' : object, 'pk' : pk};
+        console.log(data);
+        return this.http.post<any>(this.domain + 'generico/editar', data)
+        .pipe(
+            map(res => {
+                return res;
+            })
+        );
+    }
+
+    /**
+     * Editar en una determinada tabla
+     * @param tabla la tabla de donde se traera los registros
+     * @param objeto el objeto a editar
+     */
+    editarEntero (table: string, object: object, pk: number) {
+        var data = {'tabla' : table, 'objeto' : object, 'pk' : pk};
         return this.http.post<any>(this.domain + 'generico/editar', data)
         .pipe(
             map(res => {
@@ -66,7 +103,7 @@ export class GenericoService {
      * @param objeto los parametros dado el caso que vaya a iltrar
      */
     buscar (table: string, object: object) {
-        const data = {'tabla' : table, 'objeto' : object};
+        var data = {'tabla' : table, 'objeto' : object};
         return this.http.post<any>(this.domain + 'generico/buscar', data)
         .pipe(
             map(res => {
@@ -81,7 +118,7 @@ export class GenericoService {
      * @param objeto los parametros para eliminar, el objeto tiene la pk y el valor
      */
     eliminar (table: string, object: object) {
-        const data = {'tabla' : table, 'objeto' : object};
+        var data = {'tabla' : table, 'objeto' : object};
         return this.http.post<any>(this.domain + 'generico/eliminar', data)
         .pipe(
             map(res => {
@@ -89,7 +126,6 @@ export class GenericoService {
             })
         );
     }
-
 
     /**
      * Returna una variable por get
@@ -108,7 +144,43 @@ export class GenericoService {
             if (sParameterName[0] === sParam) {
                 return sParameterName[1] === undefined ? true : sParameterName[1];
             }
+        }
     }
 
-}
+    /**
+     * 
+     * @param date 
+     */
+    formatoFecha(date){
+        // Cortamos el date a 10 caracteres y luego hacemos split cada que encuentre un -
+        var data = date.slice(0, 10).split('-');
+        // retornamos año-mes-dia
+        return data[0] + '-' + data[1] + '-' + data[2];
+    }
+
+    /**
+     * convierte un archivo a base64
+     * @param archivo a convertir en base64
+     */
+    getBase64(archivo) {
+        var reader = new FileReader();
+        reader.readAsDataURL(archivo);
+        reader.onload = function () {
+            return reader.result;
+        };
+    }
+
+    /**
+     * sube un archivo al servidor
+     * @param archivo
+     */
+    cargarArchivo (archivo: File) {
+        return this.http.post<any>(this.domain + 'archivo/subir', archivo)
+        .pipe(
+            map(res => {
+                return res;
+            })
+        );
+    }
+    
 }

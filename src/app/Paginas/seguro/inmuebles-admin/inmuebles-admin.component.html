@@ -1,257 +1,378 @@
-<div class="contact">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-6">
-                <div class="section_title"> Gestion Inmueble </div>
-                <div class="section_subtitle">Gestione toda la informacion de los Inmuebles</div><br>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../../../../../assets/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../../../../assets/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="../../../../../assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../../../../../assets/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="../../../../../assets/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css">
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../../../../assets/dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+                   folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../../../../../assets/dist/css/skins/_all-skins.min.css">
+
+</head>
+
+<section class="content-header">
+  <h1>
+    Gestion de Inmueble
+  </h1>
+  <ol class="breadcrumb">
+    <li>
+      <a href="#">
+        <i class="fa fa-dashboard"></i> Inicio</a>
+    </li>
+    <li>
+      <a href="#">Dashboard</a>
+    </li>
+    <li class="active">Gestion de Inmueble</li>
+  </ol>
+</section>
+
+<section class="content">
+  <div class="row">
+    <!--Columna derecha-->
+    <div class="col-md-6">
+      <!--Aqui empieza el modulo buscar inmueble-->
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Buscar Inmueble</h3>
+        </div>
+        <form (ngSubmit)="buscarInmueble($event)" class="contact_form" id="contact_form">
+          <div class="box-body">
+            <div class="form-group">
+              <div>
+                <input [(ngModel)]="numMatriculaBuscar" name="numero_matricula" type="text" class="form-control" placeholder="Numero de matricula"
+                  required>
+              </div>
             </div>
-            <div class="col-lg-6">
-                <div class="contact_form_container">
-                    <form (ngSubmit)="buscarInmueble($event)" class="contact_form" id="contact_form">
-                      <div class="row">
-                        <div class="col-lg-8">
-                            <div><input [(ngModel)]="inmueble.numero_matricula" name="numero_matricula" type="text" class="contact_input" placeholder="Numero de matricula" required></div>
-                        </div>
-                        <div class="col-lg-4" style="padding-left: 0">
-                            <button style="height: 48px;margin: 0;width: 100%" class="contact_button button">Buscar</button>
-                        </div>
-                      </div>
-                    </form>
-                </div>
+            <div class="col-md-6" style="padding-left: 0">
+              <button style="height: 48px;margin: 0;width: 100%" class="contact_button button">Buscar</button>
             </div>
           </div>
-        <div class="row">
-          <div class="elements_accordions">
-            <div class="accordions">
-              <div class="accordion_container">
-                <div class="aviso alert alert-danger" style="margin: 20px 0 20px 0;" *ngIf="show == 1"><div id="close" title="Cerrar">×</div>{{msj}}</div>
-                <div class="aviso alert alert-success" style="margin: 20px 0 20px 0;" *ngIf="show == 2"><div id="close" title="Cerrar">×</div>{{msj}}</div>  
-                <div class="accordion d-flex flex-row align-items-center"><div>Clic para registrar, editar o ver informacion de un Inmueble </div></div>
-                <div class="accordion_panel">
-                  <!-- contenido del acordion -->
-        <!-- Form -->
-        <div class="col-lg-12">    
-          <div class="tabs">
-            <div class="tabs_container">
-              <div class="tabs d-flex flex-row align-items-center justify-content-start flex-wrap">
-                <div class="tab active">1. Registrar Inmueble</div>
-              </div>
-              <div class="tab_panels">
-                <div class="tab_panel active">
-                  <div class="tab_panel_content">
-                    <div class="tab_text">
-                      <!-- Aqui va la Informacion basica -->
-                      <div class="col-lg-10" style="margin: 0 auto">
-                      <div class="contact_form_container">
-                          <form #datosForm="ngForm" class="contact_form">
-                            <div class="section_subtitle"> Datos del Inmueble </div>
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <label>Cedula del Usuario Propietario:</label>
-                                <input type="text" [(ngModel)]="cedula" name="cedula" class="contact_input" placeholder="Cedula Usuario" required="required">
-                              </div>
-                              <div class="col-lg-6">
-                                <label>Direccion:</label>
-                                <input type="text" [(ngModel)]="inmueble.direccion" name="direccion" class="contact_input" placeholder="Direccion" required="required">
-                              </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Numero de Matricula:</label>
-                                  <input type="text" [(ngModel)]="inmueble.numero_matricula" name="numero_matricula" class="contact_input" placeholder="Numero de Matricula" required="required">
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Detalles:</label>
-                                  <input type="text" [(ngModel)]="inmueble.detalles" name="detalles" class="contact_input" placeholder="Detalles" required="required">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Año de Construcion:</label>
-                                  <input type="date" [(ngModel)]="inmueble.anoconstruccion" name="anoconstruccion" class="contact_input" placeholder="Año de Construccion" required="required" max="2000-01-01" >
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Tipo de Cortinas:</label>
-                                  <input type="text" [(ngModel)]="inmueble.tipoCortinas" name="tipoCortinas" class="contact_input" placeholder="Tipo de Cortinas" required="required" >
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Departamento:</label>
-                                  <select [(ngModel)]="departamentoSeleccionado.id" (ngModelChange)="listarCiudades($event)" name="tipoInmueble"><option *ngFor="let d of departamentos" value="{{d.id}}">{{d.nombre}}</option></select>
-                                </div>
-                                <div class="col-lg-6">
-                                  <label *ngIf="ciudades.length > 0">Ciudad:</label>
-                                  <select *ngIf="ciudades.length > 0" [(ngModel)]="ciudadSeleccionada.id" name="ciudad"><option *ngFor="let c of ciudades" value="{{c.id}}">{{c.nombre}}</option></select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Tipo de Inmueble:</label>
-                                  <select [(ngModel)]="tipoInmuebleSeleccionado.id" name="tipoInmueble"><option *ngFor="let t of tiposInmueble" value="{{t.id}}">{{t.nombre}}</option></select>
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Area del predio:</label>
-                                  <input type="text" [(ngModel)]="inmueble.area" name="area" class="contact_input" placeholder="Area del Predio" required="required" >
-                                </div>        
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Valor del Inmueble:</label>
-                                  <input type="text" [(ngModel)]="inmueble.valor" name="valor" class="contact_input" placeholder="Valor del inmueble" required="required" >
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Numero de baños:</label>
-                                  <input type="text" [(ngModel)]="inmueble.banios" name="banios" class="contact_input" placeholder="Numero de baños" required="required" >
-                                </div>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Numero de habitaciones:</label>
-                                  <input type="text" [(ngModel)]="inmueble.habitaciones" name="habitaciones" class="contact_input" placeholder="Numero de habitaciones" required="required" >
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Zona:</label>
-                                  <select [(ngModel)]="zonaSeleccionada.id" name="tipoInmueble"><option *ngFor="let z of zonas" value="{{z.id}}">{{z.nombre}}</option></select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Para vender o arrendar:</label>
-                                  <select [(ngModel)]="tipoAVSeleccionado.id" name="tipoInmueble"><option *ngFor="let v of ventaArriendo" value="{{v.id}}">{{v.nombre}}</option></select>
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Numero de garajes:</label>
-                                  <input type="text" [(ngModel)]="inmueble.garajes" name="banios" class="contact_input" placeholder="Numero de baños" required="required" >
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                  <label>Asensor: </label>
-                                  <input type="checkbox" [(ngModel)]="theCheckboxAsensor"  name="Asensor" data-md-icheck (change)="toggleVisibilityAsensor($event)" style="margin-left: 10px"/>
-                                </div>
-                                <div class="col-lg-6">
-                                  <label>Cancha Deportiva: </label>
-                                  <input type="checkbox" [(ngModel)]="theCheckboxCanchasDepor"  name="Asensor" data-md-icheck (change)="toggleVisibilityCanchasDepor($event)" style="margin-left: 10px"/>
-                                </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Zona Humeda: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxZonasHumedas"  name="Asensor" data-md-icheck (change)="toggleVisibilityZonasHumedas($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Zona Infantil: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxZonaInfantil" name="Asensor" data-md-icheck (change)="toggleVisibilityZonaInfantil($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Jardines: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxJardines" name="Asensor" data-md-icheck (change)="toggleVisibilityJardines($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Tranporte publico cercano: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxTransporteCercano" name="Asensor" data-md-icheck (change)="toggleVisibilityTransporteCercano($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Precio negociable: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxPrecioNegociable" name="Asensor" data-md-icheck (change)="toggleVisibilityPrecioNegociable($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Zona para secar ropa: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxZonasRopas" name="Asensor" data-md-icheck (change)="toggleVisibilityZonasRopas($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Parqueadero: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxParqueadero" name="Asensor" data-md-icheck (change)="toggleVisibilityParqueadero($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Deposito: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxDeposito" name="Asensor" data-md-icheck (change)="toggleVisibilityDeposito($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Estudio: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxEstudio" name="Asensor" data-md-icheck (change)="toggleVisibilityEstudio($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Cuarto de servicio: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxCuartoServicio" name="Asensor" data-md-icheck (change)="toggleVisibilityCuartoServicio($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Chimenea: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxChimenea" name="Asensor" data-md-icheck (change)="toggleVisibilityChimenea($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Cocina abierta: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxCocinaAC" name="Asensor" data-md-icheck (change)="toggleVisibilityCocinaAC($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                                    <div class="col-lg-6">
-                                      <label>Comedor Independiente: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxComedorIndependiente" name="Asensor" data-md-icheck (change)="toggleVisibilityComedorIndependiente($event)" style="margin-left: 10px"/>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <label>Vistas Exteriores: </label>
-                                      <input type="checkbox" [(ngModel)]="theCheckboxVistaExterios" name="Asensor" data-md-icheck (change)="toggleVisibilityVistaExterios($event)" style="margin-left: 10px"/>
-                                    </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <button type="submit" (click)="buscarUsuario(datosForm)" style="width: 100%" class="contact_button button">Registrar Inmueble</button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
+        </form>
+      </div>
+      <!--Aqui finaliza el modulo buscar inmueble-->
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Datos principales</h3>
         </div>
+        <!--Aqui empieza la informacion basica del inmueble-->
+        <form #datosForm="ngForm" role="form">
+          <div class="box-body">
+            <div class="form-group">
+              <label *ngIf="!busco">Cedula del Usuario Propietario:</label>
+              <input *ngIf="!busco" type="number" min="1" [(ngModel)]="cedula" name="cedula" class="form-control" required="required">
+            </div>
+            <div class="form-group">
+              <label>Numero de Matricula:</label>
+              <input type="number" min="1" [(ngModel)]="inmueble.numero_matricula" name="numero_matricula" class="form-control" required="required">
+            </div>
+
+            <div class="form-group">
+              <label>Tipo de Inmueble:</label>
+              <select [(ngModel)]="tipoInmuebleSeleccionado.id" name="tipoInmueble" class="form-control select2 select2-hidden-accessible"
+                style="width: 100%;" tabindex="-1" aria-hidden="true">
+                <option *ngFor="let t of tiposInmueble" value="{{t.id}}">{{t.nombre}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Año de Construcion</label>
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="date" [(ngModel)]="inmueble.anoconstruccion" name="anoconstruccion" class="form-control pull-right" required="required">
+              </div>
+              <!-- /.input group -->
+            </div>
+            <div class="form-group">
+              <label>Precio</label>
+              <input type="number" min="1" [(ngModel)]="inmueble.valor" name="valor" class="form-control" required="required">
+            </div>
+
+
+
+            <div class="form-group">
+              <label>Detalles:</label>
+              <textarea class="form-control textarea" name="detalles" [(ngModel)]="inmueble.detalles" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"
+                placeholder="Escribe algo aqui..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-md-4">
+              <button type="button" (click)="limpiarCampos(datosForm)" style="width: 100%" data-dismiss="modal" class="btn btn-default">
+                <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;Cancelar
+              </button>
+            </div>
+            <div class="col-md-4">
+                <button *ngIf="busco" type="button" (click)="editar(datosForm)" style="width: 100%" class="btn btn-info">
+                  <span class="glyphicon glyphicon-edit"></span>&nbsp; Editar
+                </button>
+              </div>
+            <div class="col-md-4">
+              <button *ngIf="!busco" type="submit" (click)="buscarUsuario(datosForm)" style="width: 100%" class="btn btn-primary">
+                <span class="glyphicon glyphicon-save"></span>&nbsp; Registrar
+              </button>
+              
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- End Form -->
-              <!-- end contenido del acordion -->
+    <div class="col-lg-6">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Facilidades</h3>
+        </div>
+        <form #datosForm="ngForm" role="form">
+          <div class="box-body">
+            <!--Aqui inicia facilidades-->
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxAsensor" name="Ascensor" class="custom-control-input">
+                <label class="custom-control-label">Ascensor</label>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxCanchasDepor" name="CanchaDepor" class="custom-control-input">
+                <label class="custom-control-label">Cancha</label>
+              </div>
+            </div>
+          
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxZonasHumedas" name="ZonaHumeda" class="custom-control-input">
+                <label class="custom-control-label">Zona Humeda</label>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxZonaInfantil" name="ZonaInfantil" class="custom-control-input">
+                <label class="custom-control-label">Zona Infantil</label>
+              </div>
+            </div>
+           <!-- <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxJardines" name="Jardines" class="custom-control-input">
+                <label class="custom-control-label">Jardines</label>
+              </div>
+            </div>
+          -->
+          <!--  <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxTransporteCercano" name="TransCercano" class="custom-control-input">
+                <label class="custom-control-label">Tranporte cercano</label>
+              </div>
+            </div>
+          -->
+            <!--  <div class="col-lg-4">
+                  <div class="custom-control custom-checkbox">
+                      <input type="checkbox" [(ngModel)]="theCheckboxPrecioNegociable" name="PrecioNegociable" class="custom-control-input" >
+                      <label class="custom-control-label">Precio negociable</label>
+                  </div>
+              </div>
+            -->
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxZonasRopas" name="theCheckboxZonasRopas" class="custom-control-input">
+                <label class="custom-control-label">Terraza</label>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxParqueadero" name="Parqueadero" class="custom-control-input">
+                <label class="custom-control-label">Parqueadero</label>
+              </div>
+            </div>
+          <!--  <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxDeposito" name="Deposito" class="custom-control-input">
+                <label class="custom-control-label">Deposito</label>
+              </div>
+            </div>
+          -->
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxEstudio" name="Estudio" class="custom-control-input">
+                <label class="custom-control-label">Estudio</label>
+              </div>
+            </div>
+         <!--   <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxCuartoServicio" name="CuartoServicio" class="custom-control-input">
+                <label class="custom-control-label">Cuarto servicio</label>
+              </div>
+            </div>
+          -->
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxChimenea" name="Chimenea" class="custom-control-input">
+                <label class="custom-control-label">Chimenea</label>
+              </div>
+            </div>
+        <!--    <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxCocinaAC" name="CocinaAC" class="custom-control-input">
+                <label class="custom-control-label">Cocina abierta</label>
+              </div>
+            </div>
+          -->
+          <!--  <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxComedorIndependiente" name="ComedorIndependiente" class="custom-control-input">
+                <label class="custom-control-label">Comedor independiente</label>
+              </div>
+            </div>
+          -->
+            <div class="col-lg-4">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" [(ngModel)]="theCheckboxVistaExterios" name="VistaExterior" class="custom-control-input">
+                <label class="custom-control-label">Vista Exteriores</label>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label class="control-label">Area M 2</label>
+                <input type="number" min="1" [(ngModel)]="inmueble.area" name="area" class="form-control" name="areaCuadrada" id="areaCuadrada">
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label class="control-label">Num. de Habitacion</label>
+                <input type="number" min="1" [(ngModel)]="inmueble.habitaciones" name="habitaciones" class="form-control" name="areaCuadrada"
+                  id="areaCuadrada">
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label class="control-label">Num. de Baños</label>
+                <input type="number" min="1" [(ngModel)]="inmueble.banios" name="banios" class="form-control" name="areaCuadrada" id="areaCuadrada">
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label class="control-label">Num. de Pisos</label>
+                <input type="number" min="1" [(ngModel)]="inmueble.tipoCortinas" name="tipoCortinas" class="form-control" name="areaCuadrada"
+                  id="areaCuadrada">
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
+    </div>
+    <!--Aqui finaliza las facilidades-->
+
+    <div class="col-lg-6">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Ubicacion</h3>
+        </div>
+        <form #datosForm="ngForm" role="form">
+          <div class="box-body">
+            <div class="form-group">
+              <label>Direccion:</label>
+              <input type="text" [(ngModel)]="inmueble.direccion" name="direccion" class="form-control" required="required">
+            </div>
+            <div class="form-group">
+              <label class="control-label">Departamento:</label>
+              <select [(ngModel)]="departamentoSeleccionado.id" (ngModelChange)="listarCiudades($event)" name="departamento" class="form-control select2 select2-hidden-accessible">
+                <option *ngFor="let d of departamentos" value="{{d.id}}">{{d.nombre}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label *ngIf="ciudades.length > 0" class="control-label">Ciudad:</label>
+              <select *ngIf="ciudades.length > 0" [(ngModel)]="ciudadSeleccionada.id" name="ciudad" class="form-control select2 select2-hidden-accessible">
+                <option *ngFor="let c of ciudades" value="{{c.id}}">{{c.nombre}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Zona:</label>
+              <select [(ngModel)]="zonaSeleccionada.id" name="zona" class="form-control select2 select2-hidden-accessible">
+                <option *ngFor="let z of zonas" value="{{z.id}}">{{z.nombre}}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--Fin columna izquierda-->
+    <div class="col-md-6">
+      <div class="box box-success">
+        <div class="box-header with-border">
+          <h3 class="box-title">Lista de inmuebles ({{inmuebles.length}})</h3>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Direccion</th>
+              <th scope="col">Numero de Matricula</th>
+              <th scope="col">Cedula del Propietario</th>
+              <th scope="col">Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of inmuebles">
+              <td>{{e.direccion}}</td>
+              <td>{{e.numero_matricula}}</td>
+              <td>{{e.usuario.persona.cedula}}</td>
+              <td>
+                <button *ngIf="!selectedEditar" class="btn btn-block btn-danger btn-xs" (click)="eliminar(e)" style="margin-left: 10px">Eliminar</button>
+                <button *ngIf="!selectedEditar" class="btn btn-block btn-info btn-xs" (click)="ver(e)" style="margin-left: 10px">Editar</button>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      
     </div>
 
-    <div class="col-lg-12">
-        <br>
-        <div class="section_subtitle"> Lista de inmuebles ({{inmuebles.length}})</div><br>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Direccion</th>
-                <th scope="col">Numero de Matricula</th>
-                <th scope="col">cedula propietario</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let e of inmuebles">
-                <td>{{e.direccion}}</td>
-                <td>{{e.numero_matricula}}</td>
-                <td><button class="btn" (click)="ver(e)">ver</button><button class="btn" (click)="eliminar(e)" style="margin-left: 10px">Eliminar</button></td>
-              </tr>
-            </tbody>
-          </table>
-    </div>
-    </div>
-   </div>
- </div>
-</div>
+
+  </div>
+  
+</section>
+
+<!-- jQuery 3 -->
+<script src="../../../../../assets/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../../../../assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- date-range-picker -->
+<script src="../../../../../assets/bower_components/moment/min/moment.min.js"></script>
+<script src="../../../../../assets/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="../../../../../assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- bootstrap color picker -->
+<script src="../../../../../assets/bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="../../../../../assets/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+
+<script>
+  $(function () {
+    $('#datepicker').datepicker({
+      autoclose: true
+    })
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+  })
+</script>
+
+
+
+
+</html>
+
