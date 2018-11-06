@@ -19,8 +19,8 @@ import { PromocionesComponent } from './Paginas/publico/promociones/promociones.
 import { EditarCuentaComponent } from './Paginas/seguro/editar-cuenta/editar-cuenta.component';
 import { InmueblesAdminComponent } from './Paginas/seguro/inmuebles-admin/inmuebles-admin.component';
 import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmueble.component';
-import { AsignarArriendoContratoComponent } from './Paginas/seguro/asignar-arriendo-contrato/asignar-arriendo-contrato.component';
 import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas-contratos/asignar-ventas-contratos.component';
+import { GestionContratoComponent } from './paginas/seguro/gestion-contrato/gestion-contrato.component';
 
 @NgModule({
   declarations: [
@@ -37,8 +37,8 @@ import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas
     EditarCuentaComponent,
     InmueblesAdminComponent,
     AsignarVentasContratosComponent,
-    AsignarArriendoContratoComponent,
-    VerInmuebleComponent
+    VerInmuebleComponent,
+    GestionContratoComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +59,10 @@ import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas
       {
         path: 'administracion/gestion-inmuebles',
         component: InmueblesAdminComponent
+      },
+      {
+        path: 'administracion/gestion-contrato',
+        component: GestionContratoComponent
       },
       {
         path: 'administracion/inmuebles-admin',
@@ -91,10 +95,6 @@ import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas
       {
         path: 'administracion/asignar-ventas-contratos',
         component: AsignarVentasContratosComponent
-      },
-      {
-        path: 'administracion/asignar-arriendo-contrato',
-        component: AsignarArriendoContratoComponent
       },
       {
         path: 'registrousuario',
