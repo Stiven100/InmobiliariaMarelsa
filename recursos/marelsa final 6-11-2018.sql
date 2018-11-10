@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-10-2018 a las 03:30:55
+-- Tiempo de generación: 06-11-2018 a las 07:24:56
 -- Versión del servidor: 10.1.36-MariaDB
 -- Versión de PHP: 7.2.10
 
@@ -42,7 +42,10 @@ INSERT INTO `accesos` (`id`, `nombre`, `url`) VALUES
 (1, 'Gestionar Personas', 'administracion/gestionar-personas'),
 (2, 'Gestionar Empleados', 'administracion/gestionar-empleados'),
 (3, 'Gestionar Clientes', 'administracion/gestionar-clientes'),
-(4, 'Gestionar Administradores', 'administracion/gestionar-administradores');
+(4, 'Gestionar Administradores', 'administracion/gestionar-administradores'),
+(5, 'Gestionar Inmueble', 'administracion/gestion-inmuebles'),
+(6, 'Gestionar Contrato de venta', 'administracion/asignar-ventas-contratos'),
+(7, 'Gestionar Contrato de arriendo', 'administracion/asignar-arriendo-contrato');
 
 -- --------------------------------------------------------
 
@@ -66,8 +69,17 @@ CREATE TABLE `archivo_inmueble` (
 CREATE TABLE `arriendo` (
   `id` int(11) NOT NULL,
   `contrato` int(11) NOT NULL,
-  `empleado` int(11) NOT NULL
+  `empleado` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `descripcion` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `arriendo`
+--
+
+INSERT INTO `arriendo` (`id`, `contrato`, `empleado`, `fecha`, `descripcion`) VALUES
+(1, 1, 9, '0000-00-00', 'se arrendo');
 
 -- --------------------------------------------------------
 
@@ -135,22 +147,10 @@ INSERT INTO `ciudades` (`id`, `nombre`, `departamento`) VALUES
 (3, 'Circacia', 1),
 (4, 'Filandia', 1),
 (5, 'Pereira', 2),
-(6, 'Manizales', 2),
 (7, 'Dos Quebradas', 2),
-(8, 'Sanra rosa del cabal', 2),
-(9, 'Bogota', 3),
-(10, 'Fusagasuga', 3),
-(11, 'Cajica', 3),
-(12, 'Cota', 3),
-(13, 'Medellin', 4),
-(14, 'Zaragoza', 4),
-(15, 'La ceja', 4),
-(16, 'Puerto berrio', 4),
-(17, 'Pasto', 5),
-(18, 'Tumaco', 5),
-(19, 'La union', 5),
-(20, 'El peñol', 5),
-(21, 'Nariño', 5);
+(10, 'Salento', 1),
+(11, 'Quimabaya', 1),
+(12, 'La Tebaida', 1);
 
 -- --------------------------------------------------------
 
@@ -163,8 +163,19 @@ CREATE TABLE `contrato` (
   `descripcion` varchar(1000) DEFAULT NULL,
   `empleado` int(11) NOT NULL,
   `cliente` int(11) NOT NULL,
-  `visita` int(11) NOT NULL
+  `visita` int(11) NOT NULL,
+  `estado` int(11) NOT NULL,
+  `valorFinalInmueble` int(11) NOT NULL,
+  `fecha_finalizacion` date DEFAULT NULL,
+  `fecha_solicitud` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `contrato`
+--
+
+INSERT INTO `contrato` (`id`, `descripcion`, `empleado`, `cliente`, `visita`, `estado`, `valorFinalInmueble`, `fecha_finalizacion`, `fecha_solicitud`) VALUES
+(1, 'venta de propiedad', 9, 4, 1, 1, 50000000, '2019-11-11', '2018-11-11');
 
 -- --------------------------------------------------------
 
@@ -183,11 +194,7 @@ CREATE TABLE `departamentos` (
 
 INSERT INTO `departamentos` (`id`, `nombre`) VALUES
 (1, 'Quindio'),
-(2, 'Risaralda'),
-(3, 'Risaralda'),
-(4, 'Cundinamarca'),
-(5, 'Antioquia'),
-(6, 'Nariño');
+(2, 'Risaralda');
 
 -- --------------------------------------------------------
 
@@ -267,42 +274,51 @@ CREATE TABLE `informe` (
 
 CREATE TABLE `inmueble` (
   `id` int(11) NOT NULL,
-  `direccion` varchar(100) NOT NULL,
-  `numero_matricula` varchar(100) NOT NULL,
-  `detalles` varchar(400) NOT NULL,
-  `anoconstruccion` varchar(20) NOT NULL,
-  `tipoCortinas` varchar(100) NOT NULL,
-  `area` int(11) NOT NULL,
-  `valor` int(11) NOT NULL,
-  `banios` int(11) NOT NULL,
-  `habitaciones` int(11) NOT NULL,
-  `garajes` int(11) NOT NULL,
-  `usuario` int(11) NOT NULL,
-  `fechaAprobacion` date DEFAULT NULL,
-  `ciudad` int(11) NOT NULL,
-  `tipoAV` int(11) NOT NULL,
-  `zona` int(11) NOT NULL,
-  `estado` int(11) NOT NULL,
-  `tipo` int(11) NOT NULL,
-  `ascensor` char(1) NOT NULL,
-  `canchasDepor` char(1) NOT NULL,
-  `chimenea` char(1) NOT NULL,
-  `cocinaAC` char(1) NOT NULL,
-  `comedorIndependiente` char(1) NOT NULL,
-  `cuartoServicio` char(1) NOT NULL,
-  `deposito` char(1) NOT NULL,
-  `estudio` char(1) DEFAULT NULL,
-  `jardines` char(1) NOT NULL,
-  `parqueadero` char(1) NOT NULL,
-  `precioNegociable` char(1) NOT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `area` int(11) DEFAULT NULL,
+  `valor` int(11) DEFAULT NULL,
+  `banios` int(11) DEFAULT NULL,
+  `estado` int(11) DEFAULT NULL,
+  `tipoAV` int(11) DEFAULT NULL,
+  `garajes` int(11) DEFAULT NULL,
+  `habitaciones` int(11) DEFAULT NULL,
+  `detalles` varchar(400) DEFAULT NULL,
+  `anoconstruccion` varchar(20) DEFAULT NULL,
+  `ascensor` char(1) DEFAULT NULL,
+  `canchasDepor` char(1) DEFAULT NULL,
+  `zonasHumedas` char(1) DEFAULT NULL,
+  `zonaInfantil` char(1) DEFAULT NULL,
+  `jardines` char(1) DEFAULT NULL,
   `transporteCercano` char(1) NOT NULL,
-  `vistaExteriores` char(1) NOT NULL,
-  `zonaInfantil` char(1) NOT NULL,
-  `zonasHumedas` char(1) NOT NULL,
-  `zonaRopas` char(1) NOT NULL,
+  `precioNegociable` char(1) NOT NULL,
+  `zonaRopas` char(1) DEFAULT NULL,
+  `parqueadero` char(1) DEFAULT NULL,
+  `deposito` char(1) DEFAULT NULL,
+  `estudio` char(1) DEFAULT NULL,
+  `tipoCortinas` varchar(100) DEFAULT NULL,
+  `cuartoServicio` char(1) DEFAULT NULL,
+  `chimenea` char(1) DEFAULT NULL,
+  `cocinaAC` char(1) DEFAULT NULL,
+  `comedorIndependiente` char(1) DEFAULT NULL,
+  `vistaExterior` char(1) DEFAULT NULL,
+  `zona` int(11) DEFAULT NULL,
+  `numero_matricula` varchar(100) DEFAULT NULL,
+  `fechaAprobacion` date DEFAULT NULL,
+  `tipo` int(11) DEFAULT NULL,
+  `ciudad` int(11) DEFAULT NULL,
+  `usuario` int(11) DEFAULT NULL,
   `administrador` int(11) DEFAULT NULL,
+  `latitud` int(11) DEFAULT NULL,
+  `longitud` int(11) DEFAULT NULL,
   `promocion` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `inmueble`
+--
+
+INSERT INTO `inmueble` (`id`, `direccion`, `area`, `valor`, `banios`, `estado`, `tipoAV`, `garajes`, `habitaciones`, `detalles`, `anoconstruccion`, `ascensor`, `canchasDepor`, `zonasHumedas`, `zonaInfantil`, `jardines`, `transporteCercano`, `precioNegociable`, `zonaRopas`, `parqueadero`, `deposito`, `estudio`, `tipoCortinas`, `cuartoServicio`, `chimenea`, `cocinaAC`, `comedorIndependiente`, `vistaExterior`, `zona`, `numero_matricula`, `fechaAprobacion`, `tipo`, `ciudad`, `usuario`, `administrador`, `latitud`, `longitud`, `promocion`) VALUES
+(1, 'calle3', 1, 120000, 1, 1, 1, 1, 1, '1ghghhdfdf', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', ' ', '1', '1', '1', '1', '1', 1, '1', '0000-00-00', 1, 2, 1, NULL, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -326,25 +342,15 @@ CREATE TABLE `personas` (
 --
 
 INSERT INTO `personas` (`id`, `cedula`, `nombre`, `apellido`, `fecha_nacimiento`, `telefono`, `direccion`, `rol`) VALUES
-(1, '1090', 'david', 'ramirez', '1993-12-05', '3178860805', 'cra 15 10 n21', 1),
+(1, '1090', 'david', 'ramirezz', '1993-12-05', '3178860805', 'cra 15 10 n21', 1),
 (2, '1091', 'sebastian', 'salazar', '1992-08-14', '3164898498', 'calle 2 # 12', 1),
 (3, '1092', 'alejo', 'sanchez', '1993-10-10', '3167647445', 'CRA 12 N 24', 2),
-(4, '1094', 'monica', 'sepulveda', '1994-10-10', '3178745476', 'calle 1', 2),
+(4, '1094', 'monica', 'sepulveda', '1994-10-10', '3178745476', 'calle 3', 2),
 (5, '1095', 'monica', 'sepulveda', '1994-10-10', '3178745470', 'calle 114 012', 2),
-(6, '1096', 'jordy', 'agudelo', '1995-11-23', '3164898423', 'calle 2 # 15', 1);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `promocion`
---
-
-CREATE TABLE `promocion` (
-  `id` int(11) NOT NULL,
-  `descripcion` varchar(100) NOT NULL,
-  `porcentaje` int(11) NOT NULL,
-  `fecha` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+(6, '1096', 'jordy', 'agudeloo', '1995-11-23', '3164898423', 'calle 2 # 15', 1),
+(7, '1097', 'david', 'ramirez', '1993-12-05', '3178860', 'cra 15 10 n21', 1),
+(8, '1099', 'monica', 'sepulveda', '1994-10-10', '3178745471', 'calle 114 012', 2),
+(9, '1100', 'pamela', 'sababria', '1991-11-05', '3124344553', 'cra 19 032', 3);
 
 -- --------------------------------------------------------
 
@@ -358,6 +364,13 @@ CREATE TABLE `reportes_visitas` (
   `inmueble` int(11) NOT NULL,
   `usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reportes_visitas`
+--
+
+INSERT INTO `reportes_visitas` (`id`, `fecha`, `inmueble`, `usuario`) VALUES
+(1, '0000-00-00', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -374,6 +387,13 @@ CREATE TABLE `reservar_visita` (
   `cliente` int(11) NOT NULL,
   `empleado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `reservar_visita`
+--
+
+INSERT INTO `reservar_visita` (`id`, `mensaje`, `fecha`, `estado`, `inmueble`, `cliente`, `empleado`) VALUES
+(1, 'visita de propiedad ', '2018-11-11', 1, 1, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -428,7 +448,18 @@ INSERT INTO `rol_accesos` (`rol`, `acceso`) VALUES
 (1, 1),
 (1, 2),
 (1, 3),
-(1, 4);
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7),
+(2, 3),
+(2, 5),
+(3, 1),
+(3, 2),
+(3, 3),
+(3, 5),
+(3, 6),
+(3, 7);
 
 -- --------------------------------------------------------
 
@@ -474,8 +505,13 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`persona`, `username`, `password`) VALUES
 (1, 'admin', '1234'),
 (2, 'sebas', '1234'),
+(3, 'moni3', '1234'),
+(4, 'moni4', '1234'),
 (5, 'moni', '1234'),
-(6, 'jordy', '1234');
+(6, 'jordy', '1234'),
+(7, 'dav', '1234'),
+(8, 'monica2', '1234'),
+(9, 'pame', '1234');
 
 -- --------------------------------------------------------
 
@@ -486,8 +522,17 @@ INSERT INTO `usuarios` (`persona`, `username`, `password`) VALUES
 CREATE TABLE `venta` (
   `id` int(11) NOT NULL,
   `contrato` int(11) NOT NULL,
-  `empleado` int(11) NOT NULL
+  `empleado` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `descripcion` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `venta`
+--
+
+INSERT INTO `venta` (`id`, `contrato`, `empleado`, `fecha`, `descripcion`) VALUES
+(1, 1, 9, '2018-10-10', 'se vende');
 
 --
 -- Índices para tablas volcadas
@@ -600,10 +645,9 @@ ALTER TABLE `inmueble`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `inmueble__un` (`numero_matricula`),
   ADD KEY `inmueble_ciudades_fk` (`ciudad`),
-  ADD KEY `inmueble_promocion_fk` (`promocion`),
   ADD KEY `inmueble_usuarios_fk` (`usuario`),
-  ADD KEY `inmueble_usuarios_fkv2` (`administrador`),
-  ADD KEY `tipo_inmueble_fk` (`tipo`);
+  ADD KEY `tipo_inmueble_fk` (`tipo`),
+  ADD KEY `inmueble_usuarios_fkv2` (`administrador`);
 
 --
 -- Indices de la tabla `personas`
@@ -612,12 +656,6 @@ ALTER TABLE `personas`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personas__un` (`cedula`),
   ADD KEY `personas_roles_fk` (`rol`);
-
---
--- Indices de la tabla `promocion`
---
-ALTER TABLE `promocion`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `reportes_visitas`
@@ -683,18 +721,12 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `accesos`
 --
 ALTER TABLE `accesos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `archivo_inmueble`
 --
 ALTER TABLE `archivo_inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `arriendo`
---
-ALTER TABLE `arriendo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -720,12 +752,6 @@ ALTER TABLE `cita_desalojo`
 --
 ALTER TABLE `ciudades`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT de la tabla `contrato`
---
-ALTER TABLE `contrato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `departamentos`
@@ -761,31 +787,25 @@ ALTER TABLE `informe`
 -- AUTO_INCREMENT de la tabla `inmueble`
 --
 ALTER TABLE `inmueble`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT de la tabla `promocion`
---
-ALTER TABLE `promocion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `reportes_visitas`
 --
 ALTER TABLE `reportes_visitas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `reservar_visita`
 --
 ALTER TABLE `reservar_visita`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `reunion`
@@ -804,12 +824,6 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `tipo_inmueble`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `venta`
---
-ALTER TABLE `venta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
@@ -892,7 +906,6 @@ ALTER TABLE `informe`
 --
 ALTER TABLE `inmueble`
   ADD CONSTRAINT `inmueble_ciudades_fk` FOREIGN KEY (`ciudad`) REFERENCES `ciudades` (`id`),
-  ADD CONSTRAINT `inmueble_promocion_fk` FOREIGN KEY (`promocion`) REFERENCES `promocion` (`id`),
   ADD CONSTRAINT `inmueble_usuarios_fk` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`persona`),
   ADD CONSTRAINT `inmueble_usuarios_fkv2` FOREIGN KEY (`administrador`) REFERENCES `usuarios` (`persona`),
   ADD CONSTRAINT `tipo_inmueble_fk` FOREIGN KEY (`tipo`) REFERENCES `tipo_inmueble` (`id`);

@@ -19,6 +19,8 @@ import { PromocionesComponent } from './Paginas/publico/promociones/promociones.
 import { EditarCuentaComponent } from './Paginas/seguro/editar-cuenta/editar-cuenta.component';
 import { InmueblesAdminComponent } from './Paginas/seguro/inmuebles-admin/inmuebles-admin.component';
 import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmueble.component';
+import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas-contratos/asignar-ventas-contratos.component';
+import { GestionContratoComponent } from './paginas/seguro/gestion-contrato/gestion-contrato.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmuebl
     PromocionesComponent,
     EditarCuentaComponent,
     InmueblesAdminComponent,
-    VerInmuebleComponent
+    AsignarVentasContratosComponent,
+    VerInmuebleComponent,
+    GestionContratoComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +59,10 @@ import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmuebl
       {
         path: 'administracion/gestion-inmuebles',
         component: InmueblesAdminComponent
+      },
+      {
+        path: 'administracion/gestion-contrato',
+        component: GestionContratoComponent
       },
       {
         path: 'administracion/inmuebles-admin',
@@ -83,6 +91,10 @@ import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmuebl
       {
         path: 'administracion/gestionar-administradores',
         component: GestionarAdministradoresComponent
+      },
+      {
+        path: 'administracion/asignar-ventas-contratos',
+        component: AsignarVentasContratosComponent
       },
       {
         path: 'registrousuario',
