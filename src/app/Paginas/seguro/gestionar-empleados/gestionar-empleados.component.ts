@@ -38,13 +38,18 @@ export class GestionarEmpleadosComponent implements OnInit {
   cargo: Cargo = new Cargo();
   // formacion del empleado
   formacion: Formacion =  new Formacion();
+  // Archivo certiFicacion de la ormacion
+  archivoFormacion: File = null;
   // experiencia del empleado
   experiencia: Experiencia = new Experiencia();
+  // Archivo certiFicacion de la experiencia
+  archivoExpeiencia: File = null;
   // Variables para los mensajes en la pagina
   show: number;
   msj: string;
 
-  constructor(private genericoServicio: GenericoService, private personaServicio: PersonaService, private usuarioServicio: UsuarioService) { }
+  constructor(private genericoServicio: GenericoService, private personaServicio: PersonaService,
+    private usuarioServicio: UsuarioService) { }
 
   ngOnInit() {
     // Validamos si el usuario tiene acceso a la pagina
@@ -53,6 +58,7 @@ export class GestionarEmpleadosComponent implements OnInit {
     this.empleado.cargo = this.cargo;
     this.empleado.usuario = this.usuario;
     this.empleado.usuario.persona = this.persona;
+    this.rol.id = 3;
     this.empleado.usuario.persona.rol = this.rol;
     // Actualizamos la tabla de empleados
     this.listar();
@@ -64,12 +70,14 @@ export class GestionarEmpleadosComponent implements OnInit {
    * Registra un empleado con su usuario
    */
   registrar(form: NgForm) {
+    // this.rol.id = this.persona.rol.id;
+    // this.persona.rol = this.rol;
+    // this.usuario.persona.cedula = this.persona.cedula;
     if (this.empleado.usuario.username != null && this.empleado.usuario.persona.apellido != null) {
       // Validamos si ya hay una persona con esta cedula
       this.genericoServicio.buscar('personas', {'cedula': this.empleado.usuario.persona.cedula}).subscribe(valida => {
         if (valida.data == null) {
           // Validamos si ya hay un usuario con el username
-          // tslint:disable-next-line:quotemark
           this.genericoServicio.buscar('usuarios', {'username': "'" + this.empleado.usuario.username + "'"}).subscribe(valida2 => {
             if (valida2.data == null) {
               // Guardamos la persona asociada al empleado
@@ -172,6 +180,7 @@ export class GestionarEmpleadosComponent implements OnInit {
         this.show = 3;
         // Guardamos el resultado en persona
         this.persona = rta.data;
+        this.persona.fecha_nacimiento = this.genericoServicio.formatoFecha(this.persona.fecha_nacimiento);
         // Asignamos el rol
         this.rol.id = rta.data.rol;
         this.persona.rol = this.rol;
@@ -219,6 +228,7 @@ export class GestionarEmpleadosComponent implements OnInit {
   ver(e: Empleado) {
     this.empleado = e;
     this.buscar();
+    return true;
   }
 
   /**
@@ -272,8 +282,35 @@ export class GestionarEmpleadosComponent implements OnInit {
   /**
    * Eliminar empleado con su usuario de la base de datos
    */
-  eliminar(persona: Persona) {
-    window.alert(persona.nombre);
+  eliminar(e: Empleado) {
+    this.genericoServicio.eliminar('personas', {'id': e.usuario.persona.id}).subscribe(rta => {
+      if (rta.data === 'exito') {
+        this.msj = 'Se ha eliminado la persona correctamente';
+        this.show = 2;
+        this.listar();
+      } else {
+        this.msj = 'No se ha podido eliminar la persona: ' + rta.data;
+        this.show = 1;
+      }
+      window.alert(this.msj);
+    });
+  }
+
+  /**
+   * Asigna el archivo seleccionado del input en certificacion de experiencia o formacion
+   * @param event contiene el archivo que selecciono el usuario
+   * @param tipo define si el tipo de archivo es para experiencia o formacion
+   */
+  asignarArchivo(event, tipo) {
+    // tslint:disable-next-line:prefer-const
+    let selectedFile = <File>event.target.files[0];
+    if (tipo === 1) {
+      // Archivo Formacion
+      this.archivoFormacion = selectedFile;
+    } else {
+      // Archivo Experiencia
+      this.archivoExpeiencia = selectedFile;
+    }
   }
 
   /**
@@ -285,24 +322,35 @@ export class GestionarEmpleadosComponent implements OnInit {
     if (this.empleado.usuario.persona.id != null) {
       // Asignamos el empleado a la formacion
       this.formacion.empleado = this.empleado;
-      if (this.formacion.institucion != null && this.formacion.titulo != null) {
-        // Usamos AuxiliarObjeto para no mandar los objetos dentro, solo las foraneas
-        // tslint:disable-next-line:prefer-const
-        let auxiliar: AuxiliarObjeto = new AuxiliarObjeto();
-        auxiliar.objeto = this.formacion;
-        auxiliar.replaceValue('empleado', this.empleado.usuario.persona.id);
-        // Guardamos la formacion del empleado
-        this.genericoServicio.registrar('formaciones', auxiliar.objeto).subscribe(rta => {
-          if (rta.data === 'exito') {
-            this.msj = 'Se ha registrado la formacion academica del empleado ' + this.empleado.usuario.username;
-            this.show = 2;
-            this.listarFormaciones();
-            form.reset();
+      if (this.formacion.institucion != null && this.formacion.titulo != null && this.archivoFormacion != null) {
+        // Guardamos el archivo en el servidor y
+        // Asignamos el nombre del archivo a la certificacion de la formacion
+        this.genericoServicio.cargarArchivo(this.archivoFormacion).subscribe(r => {
+          if (r.data === 'exito') {
+            this.formacion.file_certificacion = r.nombreArchivo;
+            // Usamos AuxiliarObjeto para no mandar los objetos dentro, solo las foraneas
+            // tslint:disable-next-line:prefer-const
+            let auxiliar: AuxiliarObjeto = new AuxiliarObjeto();
+            auxiliar.objeto = this.formacion;
+            auxiliar.replaceValue('empleado', this.empleado.usuario.persona.id);
+            // Guardamos la formacion del empleado
+            this.genericoServicio.registrar('formaciones', auxiliar.objeto).subscribe(rta => {
+              if (rta.data === 'exito') {
+                this.msj = 'Se ha registrado la formacion academica del empleado ' + this.empleado.usuario.username;
+                this.show = 2;
+                this.listarFormaciones();
+                form.reset();
+              } else {
+                this.msj = rta.data;
+                this.show = 1;
+              }
+              window.alert(this.msj);
+            });
           } else {
-            this.msj = rta.data;
+            this.msj = 'No se pudo subir el archivo, intente de nuevo';
             this.show = 1;
+            window.alert(this.msj);
           }
-          window.alert(this.msj);
         });
       } else {
         this.msj = 'Ingrese los datos para registrar la Formacion Academica';
@@ -334,7 +382,6 @@ export class GestionarEmpleadosComponent implements OnInit {
     this.genericoServicio.listar('experiencias', {'empleado': this.empleado.usuario.persona.id}).subscribe(rta => {
       if (rta.data != null) {
         this.experiencias = rta.data;
-        console.log(rta.data);
       }
     });
   }
@@ -403,29 +450,40 @@ export class GestionarEmpleadosComponent implements OnInit {
    * Registra la experiencia del empleado
    */
   registrarExperiencia(form: NgForm) {
-    // Limpiamos el id, en caso de que hayan buscado una experiencia
+    // Limpiamos el id, en caso de    que hayan buscado una experiencia
     this.experiencia.id = null;
     if (this.empleado.usuario.persona.id != null) {
       // Asignamos el empleado a la experiencia
       this.experiencia.empleado = this.empleado;
-      if (this.experiencia.empresa != null && this.experiencia.cargo != null) {
-        // Usamos AuxiliarObjeto para no mandar los objetos dentro, solo las foraneas
-        // tslint:disable-next-line:prefer-const
-        let auxiliar: AuxiliarObjeto = new AuxiliarObjeto();
-        auxiliar.objeto = this.experiencia;
-        auxiliar.replaceValue('empleado', this.empleado.usuario.persona.id);
-        // Guardamos la experiencia del empleado
-        this.genericoServicio.registrar('experiencias', auxiliar.objeto).subscribe(rta => {
-          if (rta.data === 'exito') {
-            this.msj = 'Se ha registrado la experiencia laboral del empleado ' + this.empleado.usuario.username;
-            this.show = 2;
-            this.listarExperiencias();
-            form.reset();
+      if (this.experiencia.empresa != null && this.experiencia.cargo != null && this.archivoExpeiencia != null) {
+        // Guardamos el archivo en el servidor y
+        // Asignamos el nombre del archivo a la certificacion de la experiencia
+        this.genericoServicio.cargarArchivo(this.archivoExpeiencia).subscribe(r => {
+          if (r.data === 'exito') {
+            this.experiencia.file_certificacion = r.nombreArchivo;
+            // Usamos AuxiliarObjeto para no mandar los objetos dentro, solo las foraneas
+            // tslint:disable-next-line:prefer-const
+            let auxiliar: AuxiliarObjeto = new AuxiliarObjeto();
+            auxiliar.objeto = this.experiencia;
+            auxiliar.replaceValue('empleado', this.empleado.usuario.persona.id);
+            // Guardamos la experiencia del empleado
+            this.genericoServicio.registrar('experiencias', auxiliar.objeto).subscribe(rta => {
+              if (rta.data === 'exito') {
+                this.msj = 'Se ha registrado la experiencia laboral del empleado ' + this.empleado.usuario.username;
+                this.show = 2;
+                this.listarExperiencias();
+                form.reset();
+              } else {
+                this.msj = rta.data;
+               this.show = 1;
+              }
+              window.alert(this.msj);
+            });
           } else {
-            this.msj = rta.data;
+            this.msj = 'No se pudo subir el archivo, intente de nuevo';
             this.show = 1;
+            window.alert(this.msj);
           }
-          window.alert(this.msj);
         });
       } else {
         this.msj = 'Ingrese los datos para registrar la experiencia laboral';
@@ -479,6 +537,8 @@ export class GestionarEmpleadosComponent implements OnInit {
    * Muestra los datos de la certificacion en el formulario y abre el pdf
    */
   verExperiencia(e: Experiencia) {
+    e.fecha_fin = this.genericoServicio.formatoFecha(e.fecha_fin);
+    e.fecha_inicio = this.genericoServicio.formatoFecha(e.fecha_inicio);
     this.experiencia = e;
   }
 

@@ -1,17 +1,19 @@
-var express = require('express');
-var _router = express.Router();
-var multer = require('multer');
-var path = require('path');
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
+const multer = require('multer');
+const bodyParser = require('body-parser')
+const app = express();
+const router = express.Router();
 
-
-var store = multer.diskStorage({
-    destination:function(req,file,cb){
-        cb(null, './uploads');
+const DIR = './uploads';
+ 
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, DIR);
     },
-    filename:function(req,file,cb){
-        cb(null, Date.now()+'.'+file.originalname);
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + '.' + path.extname(file.originalname));
     }
 });
-
-
-var upload = multer({storage:store}).single('file');
+let upload = multer({storage: storage});
