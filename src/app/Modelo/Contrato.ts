@@ -22,10 +22,12 @@ export class Contrato {
      * retorna el valor texto de un estado
      * @param estado el numero del indice a retornar
      */
+    
+
     getEstado(estado: number) {
         const estados = [
-            'pendiente para finalizar',
-            'finalizado'
+            '1',
+            '0'
         ];
         if (estado == null) {
             // Retornamos todo el listado de estados

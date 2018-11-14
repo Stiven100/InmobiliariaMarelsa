@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { GenericoService } from 'src/app/Servicios/genericoServ.service';
-import { UsuarioService } from 'src/app/Servicios/usuarioServ.service';
-import { Usuario } from 'src/app/Modelo/Usuario';
-import { Venta } from 'src/app/Modelo/Venta';
-import { Contrato } from 'src/app/Modelo/Contrato';
-import { NgForm } from '@angular/forms';
-import { AuxiliarObjeto } from 'src/app/Modelo/AuxiliarObjeto';
+import { Contrato } from '../../../Modelo/Contrato';
+import { Arriendo } from '../../../Modelo/Arriendo';
+import { Usuario } from '../../../Modelo/Usuario';
+import { GenericoService } from '../../../Servicios/genericoServ.service';
+import { UsuarioService } from '../../../Servicios/usuarioServ.service';
+import { NgForm } from '../../../../../node_modules/@angular/forms';
+import { AuxiliarObjeto } from '../../../Modelo/AuxiliarObjeto';
 import { Empleado } from 'src/app/Modelo/Empleado';
 
+
 @Component({
-  selector: 'app-gestion-contrato',
-  templateUrl: './gestion-contrato.component.html',
-  styleUrls: ['./gestion-contrato.component.css']
+  selector: 'app-asignar-arriendo-contrato',
+  templateUrl: './asignar-arriendo-contrato.component.html',
+  styleUrls: ['./asignar-arriendo-contrato.component.css']
 })
-export class GestionContratoComponent implements OnInit {
+export class AsignarArriendoContratoComponent implements OnInit {
 
   contratos: Array<Contrato> = [];
   constratosFinales: Array<Contrato> = [];
-  ventas: Array<Venta> = [];
-  venta: Venta = new Venta();
+  arriendos: Array<Arriendo> = [];
+  arr: Arriendo = new Arriendo();
   contrato: Contrato = new Contrato();
 
   // usuario en sesion
@@ -35,22 +36,21 @@ export class GestionContratoComponent implements OnInit {
   constructor(private generico: GenericoService, private usuarioServicio: UsuarioService) { }
 
   ngOnInit() {
-    // Validamos  si el usuario tiene acceso a la pagina
-    // this.usuarioServicio.esAccesible('administracion/asignar-ventas-contratos');
+    // Validamos si el usuario tiene acceso a la pagina
+    this.usuarioServicio.esAccesible('administracion/asignar-arriendo-contrato');
     this.usuarioSesion = this.usuarioServicio.getUsuario();
     this.listar();
-    console.log(this.usuarioSesion);
   }
 
-  listarVentas() {
-    this.generico.listar('venta', null).subscribe(res => {
-      this.ventas = res.data;
-      this.agregarObjetosVenta();
+  listarArriendos() {
+    this.generico.listar('arriendo', null).subscribe(res => {
+      this.arriendos = res.data;
+      this.agregarObjetosArriendos();
     });
   }
 
-  agregarObjetosVenta() {
-    for (const v of this.ventas) {
+  agregarObjetosArriendos() {
+    for (const v of this.arriendos) {
 
       const data = v.fecha.split('T');
       const fecha = data[0];
@@ -83,15 +83,15 @@ export class GestionContratoComponent implements OnInit {
     }
   }
 
+
   /**
    * lista los contratos de estado "1" para llegar a su finalizacion
    */
   listar() {
     this.generico.listar('contrato', {'estado': 1}).subscribe(res => {
-      console.log(res.data);
       this.contratos = res.data;
       this.agregarObjetos();
-      this.listarVentas();
+      this.listarArriendos();
     });
   }
 
@@ -100,7 +100,6 @@ export class GestionContratoComponent implements OnInit {
       const fields = c.fecha_solicitud.split('T');
       const fechaSoli = fields[0];
       c.fecha_solicitud = fechaSoli;
-
       this.generico.buscar('usuarios', {'persona': c.cliente}).subscribe(res1 => {
         c.cliente = res1.data;
         this.generico.buscar('personas', {'id': c.cliente.persona}).subscribe(res5 => {
@@ -126,30 +125,13 @@ export class GestionContratoComponent implements OnInit {
     }
   }
 
+
   listadoFinal() {
-    this.constratosFinales = [];
     for (const c of this.contratos) {
-      if (c.visita.inmueble.tipoAV == 1) {
-        const dato = c.fecha_finalizacion.split('T');
-        const fecha = dato[0];
-        c.fecha_finalizacion = fecha;
+      if (c.visita.inmueble.tipoAV === 0) {
         this.constratosFinales.push(c);
       }
     }
-  }
-
-  eliminar(c: Contrato) {
-
-    this.generico.eliminar('contrato', {'id': c.id}).subscribe(res => {
-      if (res.data === 'exito') {
-        this.show = 2;
-        this.msj = 'El contrato fue eliminado';
-        this.listarVentas();
-      } else {
-        this.show = 1;
-        this.msj = 'no se pudo eliminar el contrato ' + res.data;
-      }
-    });
   }
 
   /*
@@ -173,26 +155,27 @@ export class GestionContratoComponent implements OnInit {
   ver(i: Contrato) {
     this.verSelec = true;
     this.contrato = i;
+    console.log(this.contrato.id);
   }
 
   registrar(form: NgForm) {
     const empleado: Empleado = new Empleado();
 
     const fecha = this.fechaActual();
-    this.venta.fecha = fecha;
-    this.venta.descripcion = this.descripcionSel;
-    this.venta.empleado = empleado;
-    this.venta.contrato = this.contrato;
+    this.arr.fecha = fecha;
+    this.arr.empleado = empleado;
+    this.arr.contrato = this.contrato;
+    this.arr.descripcion = this.descripcionSel;
     const aux: AuxiliarObjeto = new AuxiliarObjeto();
-    aux.objeto = this.venta;
+    aux.objeto = this.arr;
     aux.replaceValue('contrato', this.contrato.id);
     aux.replaceValue('empleado', this.usuarioSesion.persona.id);
+    console.log(aux.objeto);
 
-    console.log(this.usuarioSesion.persona.id);
 
-    this.generico.registrar('venta', aux.objeto).subscribe(res => {
+    this.generico.registrar('arriendo', aux.objeto).subscribe(res => {
       if (res.data === 'exito') {
-        this.contrato.estado = 0;
+        this.contrato.estado = 2;
         const aux2: AuxiliarObjeto = new AuxiliarObjeto();
         aux2.objeto = this.contrato;
         aux2.replaceValue('cliente', this.contrato.cliente.persona.id);
@@ -201,7 +184,7 @@ export class GestionContratoComponent implements OnInit {
 
         this.generico.editar('contrato', aux2.objeto, 'id').subscribe(res2 => {
           if (res2.data === 'exito') {
-            this.msj = 'la venta se ha registrado correctamente';
+            this.msj = 'el arriendo se ha registrado correctamente';
             this.show = 2;
             this.descripcionSel = '';
             this.constratosFinales = new Array<Contrato>();
@@ -230,4 +213,3 @@ export class GestionContratoComponent implements OnInit {
   }
 
 }
-

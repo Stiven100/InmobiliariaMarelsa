@@ -19,8 +19,10 @@ import { PromocionesComponent } from './Paginas/publico/promociones/promociones.
 import { EditarCuentaComponent } from './Paginas/seguro/editar-cuenta/editar-cuenta.component';
 import { InmueblesAdminComponent } from './Paginas/seguro/inmuebles-admin/inmuebles-admin.component';
 import { VerInmuebleComponent } from './Paginas/publico/ver-inmueble/ver-inmueble.component';
-import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas-contratos/asignar-ventas-contratos.component';
+import { AsignarArriendoContratoComponent } from './Paginas/seguro/asignar-arriendo-contrato/asignar-arriendo-contrato.component';
 import { GestionContratoComponent } from './paginas/seguro/gestion-contrato/gestion-contrato.component';
+import { AsignarVentasContratosComponent } from './Paginas/seguro/asignar-ventas-contratos/asignar-ventas-contratos.component';
+import { AsignarVisitasComponent } from './Paginas/seguro/asignar-visitas/asignar-visitas.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { GestionContratoComponent } from './paginas/seguro/gestion-contrato/gest
     EditarCuentaComponent,
     InmueblesAdminComponent,
     AsignarVentasContratosComponent,
+    AsignarArriendoContratoComponent,
     VerInmuebleComponent,
+    AsignarVisitasComponent,
     GestionContratoComponent
   ],
   imports: [
@@ -55,6 +59,10 @@ import { GestionContratoComponent } from './paginas/seguro/gestion-contrato/gest
       {
         path: 'ver-inmueble',
         component: VerInmuebleComponent
+      },
+      {
+        path: 'administracion/asignar-visitas',
+        component: AsignarVisitasComponent
       },
       {
         path: 'administracion/gestion-inmuebles',
@@ -95,6 +103,10 @@ import { GestionContratoComponent } from './paginas/seguro/gestion-contrato/gest
       {
         path: 'administracion/asignar-ventas-contratos',
         component: AsignarVentasContratosComponent
+      },
+      {
+        path: 'administracion/asignar-arriendo-contrato',
+        component: AsignarArriendoContratoComponent
       },
       {
         path: 'registrousuario',
